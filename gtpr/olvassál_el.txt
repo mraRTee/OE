@@ -6,5 +6,5 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/rot1bp/.mujoco/mujoco200/bin
 python3 run.py
 
 
-
-TODO: futtatható állomány készítése: -/run.sh --kell hozzá új környezetet telepíteni
+#1 TODO: A license-t is fel kéne tenni
+#2 TODO: futtatható állomány készítése: -/run.sh --kell hozzá új környezetet telepíteni
