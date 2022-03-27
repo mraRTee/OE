@@ -1,0 +1,79 @@
+<mujoco model="GTPR">
+    <!-- set some defaults for units and lighting -->
+    <compiler angle="radian" meshdir="."/>
+ 
+    <!-- import our stl files -->
+    <asset>
+        <mesh file="base_link.STL" />
+        <mesh file="A1.STL" />
+        <mesh file="A2.STL" />
+        <mesh file="A3.STL" />
+        <mesh file="L1-L.STL" />
+        <mesh file="L1-R.STL" />
+        <mesh file="L2-L.STL" />
+        <mesh file="L2-R.STL" />
+        <mesh file="U1.STL" />
+        <mesh file="U1L.STL" />
+        <mesh file="U1R.STL" />
+        <mesh file="U2.STL" />
+        <mesh file="U2L.STL" />
+        <mesh file="U2R.STL" />
+        <mesh file="U3.STL" />
+        <mesh file="U3L.STL" />
+        <mesh file="U3R.STL" />
+        <mesh file="WL1-1.STL" />
+        <mesh file="WL1-2.STL" />
+        <mesh file="WL2-1.STL" />
+        <mesh file="WL2-2.STL" />
+        <mesh file="WL3-1.STL" />
+        <mesh file="WL3-2.STL" />
+    </asset>
+ 
+    <!-- GTPR DEF -->
+    <worldbody>
+        <!-- lights-->
+        <light directional="true" pos="-0.5 0.5 3" dir="0 0 -1" />
+        <!-- floor -->
+        <geom name="floor" pos="0 0 0" size="1 1 1" type="plane" rgba="100 100 100 0.5"/>
+        
+        <body name="base_link" pos="0 0 0.2" >
+			<geom name="link0" type="mesh" mesh="base_link" pos="-2.3525E-17 -0.005 2.3559E-17" rgba="0.7451 0.7451 0.7451 1" euler="1.57 0 0"/>
+				
+				<body name="A1" pos="0 0 0">
+					<joint name="joint0" axis="1 1 1" pos="0 0 0"/>
+					<joint name="joint1" axis="1 0 0" pos="0 0 0"/> 
+					<geom name="A1" type="mesh" mesh="A1" rgba="0.7451 0.7451 0.7451 1" pos="5.3777E-05 4.4185E-09 0.1" euler="0 0 0"/>
+					<inertial pos="0 0 0" mass="0.75" diaginertia="1 1 1"/>
+					
+					<!-- <body name="U1" pos="0 0 0"> -->
+						
+						<!-- <joint name="joint0" axis="0 1 0" pos="0 0 0"/> -->
+						<!-- <geom name="U1" type="mesh" mesh="U1" pos="-0.05 0 0" euler="1.57  1.57 0"/> -->
+						<!-- <inertial pos="1 0 0" mass="0.75" diaginertia="1 1 1"/> -->
+						
+						<!-- <body name="WL1-2" pos="0 0 0"> -->
+							<!-- <joint name="joint2" axis="1 1 1" pos="0 0 0"/> -->
+							<!-- <joint name="joint3" axis="1 0 0" pos="0 0 0"/> -->
+							<!-- <geom name="WL1-2" type="mesh" mesh="WL1-2" pos="0 0 0" euler="0  1.57 0"/> -->
+							<!-- <inertial pos="0 0 0" mass="0.75" diaginertia="1 1 1"/> -->
+						<!-- </body> -->
+					
+					<!-- </body> -->
+				
+				</body>
+				
+				
+        
+		</body>
+		
+    </worldbody>
+ 
+    <!-- attach actuators to joints -->
+    <actuator>
+        <motor name="joint0_motor" joint="joint0"/>
+        <motor name="joint1_motor" joint="joint1"/>
+        <!-- <motor name="joint2_motor" joint="joint2"/> -->
+        <!-- <motor name="joint3_motor" joint="joint3"/> -->
+    </actuator>
+ 
+</mujoco>

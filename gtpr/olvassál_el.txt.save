@@ -1,0 +1,6 @@
+GTPR saját környezet futtatásának lépései:
+1. LD_LIBRARY_PATH környezeti változó beállítása a következő paranccsal:
+export LD_LIBRA
+RY_PATH=$LD_LIBRARY_PATH:/home/rot1bp/.mujoco/mujoco200/bin
+2. Környezet futtatás:
+python3 run.py

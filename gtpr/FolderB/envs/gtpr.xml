@@ -1,0 +1,1439 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="RobotName-v0">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-2.3525E-17 -0.005 2.3559E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.29142" />
+      <inertia
+        ixx="0.00081558"
+        ixy="5.8755E-21"
+        ixz="-2.7859E-19"
+        iyy="0.0016263"
+        iyz="-5.2122E-20"
+        izz="0.00081558" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.7451 0.7451 0.7451 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="A1">
+    <inertial>
+      <origin
+        xyz="5.3777E-05 4.4185E-09 0.1"
+        rpy="0 0 0" />
+      <mass
+        value="0.015311" />
+      <inertia
+        ixx="4.8682E-05"
+        ixy="-7.5436E-15"
+        ixz="7.3375E-18"
+        iyy="4.8682E-05"
+        iyz="1.0506E-12"
+        izz="1.9135E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/A1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.7451 0.7451 0.7451 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/A1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="A1"
+    type="revolute">
+    <origin
+      xyz="0 0.2 -0.15"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="A1" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="U1">
+    <inertial>
+      <origin
+        xyz="-0.000110498751703964 -1.29114046398815E-08 0.0499999993111867"
+        rpy="0 0 0" />
+      <mass
+        value="0.00745718660453475" />
+      <inertia
+        ixx="5.69490292678724E-06"
+        ixy="9.56767527655841E-13"
+        ixz="6.3622907909691E-14"
+        iyy="5.69477846997592E-06"
+        iyz="3.00576971943555E-12"
+        izz="9.31376615099414E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/U1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/U1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="U1"
+    type="revolute">
+    <origin
+      xyz="-0.05 0 0"
+      rpy="1.5708 -0.24237 1.5708" />
+    <parent
+      link="A1" />
+    <child
+      link="U1" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="U1L">
+    <inertial>
+      <origin
+        xyz="-2.12633468177625E-05 -2.0910446145439E-08 0.250000000492304"
+        rpy="0 0 0" />
+      <mass
+        value="0.0388723325863611" />
+      <inertia
+        ixx="0.00079404439727088"
+        ixy="6.87214319325086E-12"
+        ixz="1.87033000380517E-14"
+        iyy="0.000794044333028379"
+        iyz="7.70401901029514E-11"
+        izz="4.85891686350873E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/U1L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/U1L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="U1L"
+    type="revolute">
+    <origin
+      xyz="0 -0.5 0"
+      rpy="1.5708 0 3.1416" />
+    <parent
+      link="U1" />
+    <child
+      link="U1L" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="L1-L">
+    <inertial>
+      <origin
+        xyz="-0.0001105 -1.2911E-08 0.05"
+        rpy="0 0 0" />
+      <mass
+        value="0.0074572" />
+      <inertia
+        ixx="5.6949E-06"
+        ixy="9.5677E-13"
+        ixz="6.3623E-14"
+        iyy="5.6948E-06"
+        iyz="3.0058E-12"
+        izz="9.3138E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/L1-L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.7451 0.7451 0.7451 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/L1-L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="L1-L"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="1.5708 0 -3.1416" />
+    <parent
+      link="U1L" />
+    <child
+      link="L1-L" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="WL1-1">
+    <inertial>
+      <origin
+        xyz="-1.0045E-15 9.7807E-18 0.005"
+        rpy="0 0 0" />
+      <mass
+        value="0.010825" />
+      <inertia
+        ixx="1.1649E-06"
+        ixy="-4.4487E-22"
+        ixz="-1.1284E-22"
+        iyy="1.1649E-06"
+        iyz="-3.3785E-22"
+        izz="2.1494E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/WL1-1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.7451 0.7451 0.7451 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/WL1-1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="WL1-1"
+    type="revolute">
+    <origin
+      xyz="0.029123 -0.0072 0.05"
+      rpy="1.3284 -1.5708 0" />
+    <parent
+      link="L1-L" />
+    <child
+      link="WL1-1" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="U1R">
+    <inertial>
+      <origin
+        xyz="-2.12633468177625E-05 -2.09104461246223E-08 0.250000000492304"
+        rpy="0 0 0" />
+      <mass
+        value="0.0388723325863615" />
+      <inertia
+        ixx="0.000794044397270887"
+        ixy="6.87214319182709E-12"
+        ixz="1.87032191000831E-14"
+        iyy="0.000794044333028387"
+        iyz="7.70401901340992E-11"
+        izz="4.8589168635086E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/U1R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/U1R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="U1R"
+    type="revolute">
+    <origin
+      xyz="0 -0.5 0.1"
+      rpy="1.5708 0 3.1416" />
+    <parent
+      link="U1" />
+    <child
+      link="U1R" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="L1-R">
+    <inertial>
+      <origin
+        xyz="-0.00011049875170363 -1.29114037239475E-08 0.0499999993111863"
+        rpy="0 0 0" />
+      <mass
+        value="0.00745718660453452" />
+      <inertia
+        ixx="5.69490292678707E-06"
+        ixy="9.56767527973478E-13"
+        ixz="6.36229187091475E-14"
+        iyy="5.69477846997575E-06"
+        iyz="3.00576971617906E-12"
+        izz="9.31376615099381E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/L1-R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/L1-R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="L1-R"
+    type="revolute">
+    <origin
+      xyz="0 -0.1 0"
+      rpy="1.5708 0 -3.1416" />
+    <parent
+      link="U1R" />
+    <child
+      link="L1-R" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="WL1-2">
+    <inertial>
+      <origin
+        xyz="-1.00432030417941E-15 9.78069400219492E-18 0.005"
+        rpy="0 0 0" />
+      <mass
+        value="0.0108253175473056" />
+      <inertia
+        ixx="1.16492444939616E-06"
+        ixy="-4.9656686147324E-22"
+        ixz="-1.12838663882812E-22"
+        iyy="1.16492444939616E-06"
+        iyz="-3.37851581439631E-22"
+        izz="2.14942693967057E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/WL1-2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/WL1-2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="WL1-2"
+    type="revolute">
+    <origin
+      xyz="0.029123 -0.0072 0.05"
+      rpy="1.3284 -1.5708 0" />
+    <parent
+      link="L1-R" />
+    <child
+      link="WL1-2" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="A2">
+    <inertial>
+      <origin
+        xyz="5.37740979088819E-05 3.61649277191844E-09 0.100000000139304"
+        rpy="0 0 0" />
+      <mass
+        value="0.0153110831989663" />
+      <inertia
+        ixx="4.86816736101326E-05"
+        ixy="1.34705394489723E-14"
+        ixz="3.53859773334271E-15"
+        iyy="4.86816095195149E-05"
+        iyz="1.04866331251123E-12"
+        izz="1.91354133642264E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/A2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/A2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="A2"
+    type="revolute">
+    <origin
+      xyz="-0.1299 0.2 0.075"
+      rpy="-1.5708 1.0472 -3.1416" />
+    <parent
+      link="base_link" />
+    <child
+      link="A2" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="U2">
+    <inertial>
+      <origin
+        xyz="-0.000110517325564718 -3.26420963592255E-08 0.0500000001540327"
+        rpy="0 0 0" />
+      <mass
+        value="0.00745716374175914" />
+      <inertia
+        ixx="5.69489956677615E-06"
+        ixy="1.69245018043226E-12"
+        ixz="-3.64085371456469E-14"
+        iyy="5.69477127061267E-06"
+        iyz="3.36948143798873E-12"
+        izz="9.31376553693824E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/U2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/U2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="U2"
+    type="revolute">
+    <origin
+      xyz="-0.05 0 0"
+      rpy="1.5708 -0.24237 1.5708" />
+    <parent
+      link="A2" />
+    <child
+      link="U2" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="U2L">
+    <inertial>
+      <origin
+        xyz="-2.12719702360475E-05 -3.14318642433142E-08 0.250000000852379"
+        rpy="0 0 0" />
+      <mass
+        value="0.0388722676203083" />
+      <inertia
+        ixx="0.000794043671064434"
+        ixy="8.9956874691238E-12"
+        ixz="-2.83796829768568E-13"
+        iyy="0.000794043598209545"
+        iyz="7.79523056984913E-11"
+        izz="4.85891653610516E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/U2L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/U2L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="U2L"
+    type="revolute">
+    <origin
+      xyz="0 -0.5 0"
+      rpy="1.5708 0 3.1416" />
+    <parent
+      link="U2" />
+    <child
+      link="U2L" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="L2-L">
+    <inertial>
+      <origin
+        xyz="-0.00175960026498095 -0.000407723248495806 0.0509807619449954"
+        rpy="0 0 0" />
+      <mass
+        value="0.0074571621608984" />
+      <inertia
+        ixx="5.69489881189675E-06"
+        ixy="1.34476786925292E-12"
+        ixz="3.72285378691676E-14"
+        iyy="5.69477044258559E-06"
+        iyz="3.39427097359068E-12"
+        izz="9.3137653347021E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/L2-L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/L2-L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="L2-L"
+    type="revolute">
+    <origin
+      xyz="-0.0016491 0.10098 -0.0004077"
+      rpy="-1.5708 0 3.1416" />
+    <parent
+      link="U2L" />
+    <child
+      link="L2-L" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="WL2-1">
+    <inertial>
+      <origin
+        xyz="-1.00451133335915E-15 1.10032807524693E-17 0.005"
+        rpy="0 0 0" />
+      <mass
+        value="0.0108253175473056" />
+      <inertia
+        ixx="1.16492444939616E-06"
+        ixy="-4.70071232477401E-22"
+        ixz="-1.12838663882811E-22"
+        iyy="1.16492444939616E-06"
+        iyz="-3.37851581439631E-22"
+        izz="2.14942693967057E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/WL2-1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/WL2-1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="WL2-1"
+    type="revolute">
+    <origin
+      xyz="0.027474 0.0067923 0.050981"
+      rpy="1.5708 -0.5236 0.24237" />
+    <parent
+      link="L2-L" />
+    <child
+      link="WL2-1" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="U2R">
+    <inertial>
+      <origin
+        xyz="-2.12719702359365E-05 -3.14318646110756E-08 0.250000000852378"
+        rpy="0 0 0" />
+      <mass
+        value="0.0388722676203082" />
+      <inertia
+        ixx="0.000794043671064434"
+        ixy="8.99568746664033E-12"
+        ixz="-2.83796746792427E-13"
+        iyy="0.000794043598209545"
+        iyz="7.79523061572751E-11"
+        izz="4.85891653610544E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/U2R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/U2R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="U2R"
+    type="revolute">
+    <origin
+      xyz="0 -0.5 0.1"
+      rpy="1.5708 0 3.1416" />
+    <parent
+      link="U2" />
+    <child
+      link="U2R" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="L2-R">
+    <inertial>
+      <origin
+        xyz="-0.000110519420706778 -2.80939090879784E-08 0.0499999998314623"
+        rpy="0 0 0" />
+      <mass
+        value="0.0074571621608984" />
+      <inertia
+        ixx="5.69489881189675E-06"
+        ixy="1.34476786925292E-12"
+        ixz="3.72285382099351E-14"
+        iyy="5.69477044258559E-06"
+        iyz="3.39427097372812E-12"
+        izz="9.31376533470214E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/L2-R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/L2-R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="L2-R"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="-1.5708 0 -3.1416" />
+    <parent
+      link="U2R" />
+    <child
+      link="L2-R" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="WL2-2">
+    <inertial>
+      <origin
+        xyz="-1.00412927499968E-15 9.78069400219492E-18 0.005"
+        rpy="0 0 0" />
+      <mass
+        value="0.0108253175473056" />
+      <inertia
+        ixx="1.16492444939616E-06"
+        ixy="-4.42024639833025E-22"
+        ixz="-1.12838663882812E-22"
+        iyy="1.16492444939616E-06"
+        iyz="-3.41971328631058E-22"
+        izz="2.14942693967057E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/WL2-2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/WL2-2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="WL2-2"
+    type="revolute">
+    <origin
+      xyz="0.029123 0.0072 0.05"
+      rpy="1.5708 -0.5236 0.24237" />
+    <parent
+      link="L2-R" />
+    <child
+      link="WL2-2" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="A3">
+    <inertial>
+      <origin
+        xyz="5.3774065906953E-05 5.17042367254028E-09 0.0999999998607637"
+        rpy="0 0 0" />
+      <mass
+        value="0.0153110812648134" />
+      <inertia
+        ixx="4.86816694888096E-05"
+        ixy="-7.2112799808172E-13"
+        ixz="-3.522180888539E-15"
+        iyy="4.86816058895672E-05"
+        iyz="1.04866268070221E-12"
+        izz="1.91354118930584E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/A3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/A3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="A3"
+    type="revolute">
+    <origin
+      xyz="0.1299 0.2 0.075"
+      rpy="-1.5708 -1.0472 3.1416" />
+    <parent
+      link="base_link" />
+    <child
+      link="A3" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="U3">
+    <inertial>
+      <origin
+        xyz="-0.000110519420706612 -2.80939090879784E-08 0.049999999831462"
+        rpy="0 0 0" />
+      <mass
+        value="0.00745716216089813" />
+      <inertia
+        ixx="5.69489881189646E-06"
+        ixy="1.34476786957055E-12"
+        ixz="3.72285280859866E-14"
+        iyy="5.6947704425853E-06"
+        iyz="3.394270985285E-12"
+        izz="9.3137653347017E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/U3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/U3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="U3"
+    type="revolute">
+    <origin
+      xyz="0.05 0 0"
+      rpy="1.5708 0.24237 -1.5708" />
+    <parent
+      link="A3" />
+    <child
+      link="U3" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="U3L">
+    <inertial>
+      <origin
+        xyz="-0.00167035673963664 -0.000980784396430574 0.250407694328318"
+        rpy="0 0 0" />
+      <mass
+        value="0.0388722521510226" />
+      <inertia
+        ixx="0.000794043478122468"
+        ixy="5.66699346683042E-12"
+        ixz="2.76074305801816E-13"
+        iyy="0.000794043404486528"
+        iyz="7.78427606979537E-11"
+        izz="4.85891720988723E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/U3L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/U3L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="U3L"
+    type="revolute">
+    <origin
+      xyz="-0.0016491 -0.50041 0.10098"
+      rpy="1.5708 0 3.1416" />
+    <parent
+      link="U3" />
+    <child
+      link="U3L" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="WL3-L">
+    <inertial>
+      <origin
+        xyz="0.00153856142356695 0.00040766706067763 0.0509807619449957"
+        rpy="0 0 0" />
+      <mass
+        value="0.00745716216089832" />
+      <inertia
+        ixx="5.69489881189667E-06"
+        ixy="1.34476786787649E-12"
+        ixz="3.72285248281383E-14"
+        iyy="5.6947704425855E-06"
+        iyz="3.39427099484867E-12"
+        izz="9.31376533470198E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/WL3-L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/WL3-L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="WL3-L"
+    type="revolute">
+    <origin
+      xyz="0 -0.10196 0"
+      rpy="1.5708 0 3.1416" />
+    <parent
+      link="U3L" />
+    <child
+      link="WL3-L" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="WL3-1">
+    <inertial>
+      <origin
+        xyz="-1.00454953919509E-15 9.78069400219492E-18 0.005"
+        rpy="0 0 0" />
+      <mass
+        value="0.0108253175473056" />
+      <inertia
+        ixx="1.16492444939616E-06"
+        ixy="-4.99539541799602E-22"
+        ixz="-1.12838663882812E-22"
+        iyy="1.16492444939616E-06"
+        iyz="-3.37851581439631E-22"
+        izz="2.14942693967057E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/WL3-1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/WL3-1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="WL3-1"
+    type="revolute">
+    <origin
+      xyz="-0.027474 -0.0067923 0.050981"
+      rpy="-1.5708 -0.5236 0.24237" />
+    <parent
+      link="WL3-L" />
+    <child
+      link="WL3-1" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="U3R">
+    <inertial>
+      <origin
+        xyz="-2.12758953623549E-05 -2.22828971802036E-08 0.249999999173732"
+        rpy="0 0 0" />
+      <mass
+        value="0.0388722521510227" />
+      <inertia
+        ixx="0.000794043478122471"
+        ixy="5.6669934624936E-12"
+        ixz="2.76074321240315E-13"
+        iyy="0.000794043404486532"
+        iyz="7.78427608984656E-11"
+        izz="4.8589172098873E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/U3R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/U3R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="U3R"
+    type="revolute">
+    <origin
+      xyz="0 -0.5 0"
+      rpy="1.5708 0 3.1416" />
+    <parent
+      link="U3" />
+    <child
+      link="U3R" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="WL3-R">
+    <inertial>
+      <origin
+        xyz="-0.00011051942070664 -2.80939088659338E-08 0.0499999998314619"
+        rpy="0 0 0" />
+      <mass
+        value="0.00745716216089832" />
+      <inertia
+        ixx="5.69489881189667E-06"
+        ixy="1.34476786777061E-12"
+        ixz="3.72285251621755E-14"
+        iyy="5.6947704425855E-06"
+        iyz="3.39427099488068E-12"
+        izz="9.31376533470202E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/WL3-R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/WL3-R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="WL3-R"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="1.5708 0 3.1416" />
+    <parent
+      link="U3R" />
+    <child
+      link="WL3-R" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="WL3-2">
+    <inertial>
+      <origin
+        xyz="-1.00439671585131E-15 9.78069400219492E-18 0.005"
+        rpy="0 0 0" />
+      <mass
+        value="0.0108253175473056" />
+      <inertia
+        ixx="1.16492444939616E-06"
+        ixy="-4.45385061071521E-22"
+        ixz="-1.12838663882812E-22"
+        iyy="1.16492444939616E-06"
+        iyz="-3.37851581439631E-22"
+        izz="2.14942693967057E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/WL3-2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/WL3-2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="WL3-2"
+    type="revolute">
+    <origin
+      xyz="-0.029123 -0.0072 0.05"
+      rpy="-1.5708 -0.5236 0.24237" />
+    <parent
+      link="WL3-R" />
+    <child
+      link="WL3-2" />
+    <axis
+      xyz="1000 1000 1000" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+</robot>
