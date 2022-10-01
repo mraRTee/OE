@@ -1,0 +1,246 @@
+<mujoco model="GTPR">
+    <!-- set some defaults for units and lighting -->
+    <compiler angle="radian" meshdir="."/>
+ 
+    <!-- import our stl files -->
+    <asset>
+        <mesh file="base_link.STL" />
+        <mesh file="A1.STL" />
+        <mesh file="A2.STL" />
+        <mesh file="A3.STL" />
+        <mesh file="L1-L.STL" />
+        <mesh file="L1-R.STL" />
+        <mesh file="L2-L.STL" />
+        <mesh file="L2-R.STL" />
+        <mesh file="U1.STL" />
+        <mesh file="U1L.STL" />
+        <mesh file="U1R.STL" />
+        <mesh file="U2.STL" />
+        <mesh file="U2L.STL" />
+        <mesh file="U2R.STL" />
+        <mesh file="U3.STL" />
+        <mesh file="U3L.STL" />
+        <mesh file="U3R.STL" />
+        <mesh file="WL1-1.STL" />
+        <mesh file="WL1-2.STL" />
+        <mesh file="WL2-1.STL" />
+        <mesh file="WL2-2.STL" />
+        <mesh file="WL3-1.STL" />
+        <mesh file="WL3-2.STL" />
+    </asset>
+	
+					<!-- PROBLÉMÁK: -->
+					<!-- JOINTOK HOL LEGYENEK? TÁMADÁSPONT - POS? -->
+					<!-- FULLINERTIA ÉRTÉKEK NEM JÓK, KELLENEK???? -->
+					
+					
+    <!-- GTPR DEF -->
+    <worldbody>
+        <!-- lights-->
+        <light directional="true" pos="-0.5 0.5 3" dir="0 0 -1" />
+        <!-- floor -->
+        <geom name="floor" pos="0 0 -1" size="1 1 1" type="plane" rgba="100 100 100 0.5"/>
+        
+        <body name="base_link" pos="-2.3525E-17 -0.005 2.3559E-17" >
+			<geom name="base_link" type="mesh" mesh="base_link" pos="0 0 0" rgba="0.7451 0.7451 0.7451 1" euler="1.57 0 0"/>
+				
+				<joint name="BASE_A1_joint" axis="0 1 0" pos="0 0.2 -0.15"/>
+				<!-- SZERINTEM EZT IDE KELL, AZ ÖRÖKLŐDÉS MIATT -->
+				
+				<body name="A1" pos="5.3777E-05 4.4185E-09 0.1">
+				<geom name="A1" type="mesh" mesh="A1" rgba="0.7451 0.7451 0.7451 1" pos="0 0 0" euler="0 0 0" />
+				
+					
+					<joint name="A1_U1_joint" axis="1 0 0" pos="5.3777E-05 4.4185E-09 0.1"/> 
+					
+					<inertial pos="0 0 0" mass="0.015311" diaginertia="1 1 1"/>
+					<!-- INERTIA ÉRTÉKEK NEM JÓK -->
+					<!-- <inertial pos="0 0 0" mass="0.015311" fullinertia="0.000048682 0 0 0.000048682 0.0000000000010506 0.00000019135"/> -->
+					
+					<body name="U1" pos="-2.12633468177625E-05 -2.0910446145439E-08 0.250000000492304">
+					<geom name="U1" type="mesh" mesh="U1" rgba="0.7451 0.7451 0.7451 1" pos="0 0 0" euler="1 0 0" />
+					
+						<joint name="U1_U1L_joint" axis="1 0 0" pos="0 0 0"/>
+						
+						<!-- <geom name="U1L" type="mesh" mesh="U1L" pos="-0.05 0 0" euler="1.57  1.57 0"/> -->
+						<inertial pos="0 0 0" mass="0.00745718660453475" diaginertia="1 1 1"/>
+						
+						<body name="U1L" pos="-2.12633468177625E-05 -2.0910446145439E-08 0.250000000492304">
+						<geom name="U1L" type="mesh" mesh="U1L" rgba="0.7451 0.7451 0.7451 1" pos="0 0 0" euler="0 1 0" />
+						<inertial pos="0 0 0" mass="0.0388723325863611" diaginertia="1 1 1"/>
+						
+						<joint name="U1L_L1-L_joint" axis="1 0 0" pos="0 0 0"/>
+						
+							<body name="L1-L" pos="-0.0001105 -1.2911E-08 0.05">
+							<geom name="L1-L" type="mesh" mesh="L1-L" rgba="0.7451 0.7451 0.7451 1" pos="0 0 0" euler="0 1 0" />
+							<inertial pos="0 0 0" mass="0.0074572" diaginertia="1 1 1"/>
+								
+							<joint name="L1-L_WL1-1_joint" axis="1 0 0" pos="0 0 0"/>
+								
+								<body name="WL1-1" pos="-1.0045E-15 9.7807E-18 0.005">
+								<geom name="WL1-1" type="mesh" mesh="WL1-1" rgba="0.7451 0.7451 0.7451 1" pos="0 0 0" euler="0 1 0" />
+								<inertial pos="0 0 0" mass="0.0074572" diaginertia="1 1 1"/>
+								
+								</body>
+							
+							</body>
+							
+						</body>
+						
+						<joint name="U1_U1R_joint" axis="1 0 0" pos="1 1 1"/>
+						
+						<body name="U1R" pos="-2.12633468177625E-05 -2.09104461246223E-08 0.250000000492304">
+						<geom name="U1R" type="mesh" mesh="U1R" rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" pos="0 0 0" euler="0 1 0" />
+						<inertial pos="0 0 0" mass="0.0388723325863611" diaginertia="1 1 1"/>
+						
+						<joint name="U1R_L1-R_joint" axis="1 0 0" pos="1 2 1"/>
+						
+							<body name="L1-R" pos="-0.00011049875170363 -1.29114037239475E-08 0.0499999993111863">
+							<geom name="L1-R" type="mesh" mesh="L1-R" rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" pos="0 0 0" euler="0 1 0" />
+							<inertial pos="0 0 0" mass="0.00745718660453452" diaginertia="1 1 1"/>
+							
+							<joint name="L1-R_WL1-2_joint" axis="1 0 0" pos="1 1 2"/>
+						
+								<body name="WL1-2" pos="-1.00432030417941E-15 9.78069400219492E-18 0.005">
+								<geom name="WL1-2" type="mesh" mesh="WL1-2" rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" pos="0 0 0" euler="0 1 0" />
+								<inertial pos="0 0 0" mass="0.00745718660453452" diaginertia="1 1 1"/>
+						
+							</body>
+						
+						
+							</body>
+						
+						</body>
+					
+					</body>
+				
+				</body>
+				
+				
+				
+				
+				
+				
+				
+				<!-- FULL SZAR A POS ÉRTÉK -->
+				<joint name="BASE_A2_joint" axis="0 1 0" pos="10 0.2 -0.15"/>
+				
+				<body name="A2" pos="5.37740979088819E-05 3.61649277191844E-09 0.100000000139304">
+				<geom name="A2" type="mesh" mesh="A2" rgba="0.7451 0.7451 0.7451 1" pos="0 0 0" euler="0 0 0" />
+				
+					
+					<joint name="A2_U2_joint" axis="1 0 0" pos="-0.05 10 10"/> 
+					
+					<inertial pos="0 0 0" mass="0.0153110831989663" diaginertia="1 1 1"/>
+					<!-- INERTIA ÉRTÉKEK NEM JÓK -->
+					<!-- <inertial pos="0 0 0" mass="0.015311" fullinertia="0.000048682 0 0 0.000048682 0.0000000000010506 0.00000019135"/> -->
+					
+					<body name="U2" pos="-0.000110517325564718 -3.26420963592255E-08 0.0500000001540327">
+					<geom name="U2" type="mesh" mesh="U2" rgba="0.7451 0.7451 0.7451 1" pos="0 0 0" euler="1 0 0" />
+					
+						<joint name="U2_U2L_joint" axis="1 0 0" pos="10 -0.5 10"/>
+						
+						<!-- <geom name="U1L" type="mesh" mesh="U1L" pos="-0.05 0 0" euler="1.57  1.57 0"/> -->
+						<inertial pos="0 0 0" mass="0.00745718660453475" diaginertia="1 1 1"/>
+						
+						<body name="U2L" pos="-2.12719702360475E-05 -3.14318642433142E-08 0.250000000852379">
+						<geom name="U2L" type="mesh" mesh="U2L" rgba="0.7451 0.7451 0.7451 1" pos="0 0 0" euler="0 1 0" />
+						<inertial pos="0 0 0" mass="0.0388722676203083" diaginertia="1 1 1"/>
+						
+						<joint name="U2L_L2-L_joint" axis="1 0 0" pos="-0.0016491 0.10098 -0.0004077"/>
+						
+							<body name="L2-L" pos="-0.00175960026498095 -0.000407723248495806 0.0509807619449954">
+							<geom name="L2-L" type="mesh" mesh="L2-L" rgba="0.7451 0.7451 0.7451 1" pos="0 0 0" euler="0 1 0" />
+							<inertial pos="0 0 0" mass="0.0074572" diaginertia="1 1 1"/>
+								
+							<joint name="L2-L_WL2-1_joint" axis="1 0 0" pos="0.027474 0.0067923 0.050981"/>
+								
+								<body name="WL2-1" pos="-1.00451133335915E-15 1.10032807524693E-17 0.005">
+								<geom name="WL2-1" type="mesh" mesh="WL2-1" rgba="0.7451 0.7451 0.7451 1" pos="0 0 0" euler="0 1 0" />
+								<inertial pos="0 0 0" mass="0.0074572" diaginertia="1 1 1"/>
+								
+								</body>
+							
+							</body>
+							
+						</body>
+						
+						<joint name="U2_U2R_joint" axis="1 0 0" pos="0 -0.5 0.1"/>
+						
+						<body name="U2R" pos="-2.12719702359365E-05 -3.14318646110756E-08 0.250000000852378">
+						<geom name="U2R" type="mesh" mesh="U1R" rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" pos="0 0 0" euler="0 1 0" />
+						<inertial pos="0 0 0" mass="0.0388723325863611" diaginertia="1 1 1"/>
+						
+						<joint name="U2R_L2-R_joint" axis="1 0 0" pos="1 1 1"/>
+						
+							<body name="L2-R" pos="-0.000110519420706778 -2.80939090879784E-08 0.0499999998314623">
+							<geom name="L2-R" type="mesh" mesh="L2-R" rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" pos="0 0 0" euler="0 1 0" />
+							<inertial pos="0 0 0" mass="0.00745718660453452" diaginertia="1 1 1"/>
+							
+							<joint name="L2-R_WL2-2_joint" axis="1 0 0" pos="0.029123 0.0072 0.05"/>
+						
+								<body name="WL2-2" pos="-1.00412927499968E-15 9.78069400219492E-18 0.005">
+								<geom name="WL2-2" type="mesh" mesh="WL2-2" rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" pos="0 0 0" euler="0 1 0" />
+								<inertial pos="0 0 0" mass="0.00745718660453452" diaginertia="1 1 1"/>
+						
+							</body>
+						
+						
+							</body>
+						
+						</body>
+					
+					</body>
+				
+				</body>
+				
+				
+				
+				
+				
+				<!-- JÖN A HARMADIK KÖR!!!!!!!! -->
+				
+				
+				<!-- POS és INERTIA értékeket meg kell nézni !!!!!!! -->
+				
+				
+				
+				
+				
+				
+				
+				
+				
+		</body>
+				
+    </worldbody>
+ 
+    <!-- attach actuators to joints -->
+    <actuator>
+	<!-- MOTOR??? -->
+        <motor name="BASE_A1_joint_motor" joint="BASE_A1_joint"/>
+        <motor name="A1_U1_joint_motor" joint="A1_U1_joint"/>
+        <motor name="U1_U1L_joint_motor" joint="U1_U1L_joint"/>
+        <motor name="U1_U1R_joint_motor" joint="U1_U1R_joint"/>
+        <motor name="U1R_L1-R_joint_motor" joint="U1R_L1-R_joint"/>
+        <motor name="U1L_L1-L_joint_motor" joint="U1L_L1-L_joint"/>
+        <motor name="L1-L_WL1-1_joint_motor" joint="L1-L_WL1-1_joint"/>
+		
+		<motor name="BASE_A2_joint_motor" joint="BASE_A2_joint"/>
+        <motor name="A2_U2_joint_motor" joint="A2_U2_joint"/>
+        <motor name="U2_U2L_joint_motor" joint="U2_U2L_joint"/>
+        <motor name="U2_U2R_joint_motor" joint="U2_U2R_joint"/>
+        <motor name="U2R_L2-R_joint_motor" joint="U2R_L2-R_joint"/>
+        <motor name="U2L_L2-L_joint_motor" joint="U2L_L2-L_joint"/>
+        <motor name="L2-L_WL2-1_joint_motor" joint="L2-L_WL2-1_joint"/>
+		
+		<!-- <motor name="BASE_A3_joint_motor" joint="BASE_A3_joint"/> -->
+        <!-- <motor name="A3_U3_joint_motor" joint="A3_U3_joint"/> -->
+        <!-- <motor name="U3_U3L_joint_motor" joint="U3_U3L_joint"/> -->
+        <!-- <motor name="U3_U3R_joint_motor" joint="U3_U3R_joint"/> -->
+        <!-- <motor name="U3R_L3-R_joint_motor" joint="U3R_L3-R_joint"/> -->
+        <!-- <motor name="U3L_L3-L_joint_motor" joint="U3L_L3-L_joint"/> -->
+        <!-- <motor name="L3-L_WL3-1_joint_motor" joint="L3-L_WL3-1_joint"/> -->
+    </actuator>
+ 
+</mujoco>

@@ -29,40 +29,49 @@
         <mesh file="WL3-2.STL" />
     </asset>
 	
-					<!-- PROBLÉMÁK: -->
-					<!-- JOINTOK HOL LEGYENEK? TÁMADÁSPONT - POS? -->
-					<!-- FULLINERTIA ÉRTÉKEK NEM JÓK, KELLENEK???? -->
-					
-					
-    <!-- GTPR DEF -->
+			
     <worldbody>
-        <!-- lights-->
-        <light directional="true" pos="-0.5 0.5 3" dir="0 0 -1" />
-        <!-- floor -->
-        <geom name="floor" pos="0 0 0" size="1 1 1" type="plane" rgba="100 100 100 0.5"/>
-        
-        <body name="base_link" pos="1 1 1" >
-		<!-- a body pos adja meg a középpontot -->
-			<geom name="base_link" type="mesh" mesh="base_link" pos="0 0 0" rgba="0.7451 0.7451 0.7451 1" euler="90 0 0" group="1"/>
-				
-			
-				
-				<body name="A1" pos="0 0 0">
-				<geom name="A1" type="mesh" mesh="A1" rgba="0.7451 0.7451 0.7451 1" pos="0 0 0" euler="0 0 0" group="1"/>
-				
+    <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-2.3525E-17 -0.005 2.3559E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.29142" />
+      <inertia
+        ixx="0.00081558"
+        ixy="5.8755E-21"
+        ixz="-2.7859E-19"
+        iyy="0.0016263"
+        iyz="-5.2122E-20"
+        izz="0.00081558" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.7451 0.7451 0.7451 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://GTPR_v1/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
 				<joint name="BASE_A1_joint" type="ball" pos="0 0 0" limited="true" group="1"/>
-				<!-- SZERINTEM EZT IDE KELL, AZ ÖRÖKLŐDÉS MIATT -->
-				
-			
-				
-				
-	
-				
-				
-				
-		</body>
-		</body>
-				
     </worldbody>
  
     <!-- attach actuators to joints -->
