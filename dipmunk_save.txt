@@ -1,0 +1,1090 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{oeNIKstyle}
+\usepackage{minted}
+\usepackage[utf8]{inputenc}
+\usepackage{t1enc}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+\usepackage{subfig}
+\usepackage[titletoc]{appendix}
+\usepackage{pdfpages}
+\usepackage{subfig}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{fontawesome} % egyedi listajelekhez például
+\usepackage{lscape}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,
+	urlcolor=blue,
+	citecolor=blue,
+}
+
+\usepackage{xcolor} % to access the named colour LightGray
+\definecolor{LightGray}{gray}{0.9}
+
+\usepackage{minted}
+\usemintedstyle{tango}
+\usepackage{verbatim}
+\usepackage{indentfirst}
+
+
+
+%\usepackage[T1]{fontenc}
+\usepackage[magyar]{babel} % magyarra nyelvi csomag
+
+\setlength{\parindent}{10 mm} % behúzás mértékét állíthatjuk be
+
+% megadandó adatok
+\author{Roza Tamás}
+\torzsKonyvSzam{T/00dd/FI12900/J}
+\neptunNumber{123456}
+
+% lehetne egy változóban, de akkor nem tudjuk kontrolállni, hogy hogyan legyen megtörve.
+\hunTitleFirstRow{Mesterséges intelligencia használata Párhuzamos}
+\hunTitleSecondRow{kinematikai szerkezet mozgatására}
+
+\engTitleFirstRow{ENG}
+\engTitleSecondRow{ENG}
+
+\supervisor{Dr. Galambos Péter}
+\consultant{Szűcs László}
+
+\deadlineDate{2020. május 22.}
+\terminationDate{2021. május 22.}
+
+% Beállítások
+% első változó: a számozás helye 1 = jobb oldal, 2 = középen
+% második változó: mutassa-e az összes oldalt. 0 = nem, 1 = igen.
+%\setPageNumbering{1}{0}
+% set the page style
+%\makedefaultpagestyle
+
+%TODO hivatkozások előtt space-t hagyni
+%TODO képeknél hivatkozást zárójelbe rakni: (Forrás:cite)
+%TODO XMl szekvencia diagram készítése a teljes folyamat leírására
+%TODO hivatkozások javítása
+
+\begin{document}
+	%\maketitle
+	\includepdf[pages=-]{includes/fedlap.pdf}
+	%\makeassigmentpage
+	\includepdf[pages=-]{includes/feladatlap.pdf}
+	% a feladat és a tartalmazandók listája a lennti két fájlból töltendő be
+	%\makeassigmentpagetwo{theassigment}{themustbeinassigment}
+	%\makedeclaration
+	\includepdf[pages=-]{includes/hallgatoi_nyilatkozat.pdf}
+	%\includepdf[pages=-]{includes/M13OHG_Csaki_Szucs_KONZ.pdf}
+	%\includepdf[pages=-]{includes/M13OHG_Csaki_Szucs_KONZ_II.pdf}
+	\setcounter{tocdepth}{3}
+	\setcounter{secnumdepth}{4}
+	\setcounter{page}{1} % start counting pages from here
+	\setalgorithmcounter % set up algorithm numbering
+
+	\maketoc
+	\section{Bevezetés}
+	A diplomamunka témája a robotvezérlés lehetőségeinek vizsgálata mesterséges intelligencia különböző típusainak felhasználásával. Az elmúlt évtizedben a mesterséges intelligencia hatalmas sebességgel fejlődött és vált a hétköznapi életben is egy igen divatos területté. A modern kultúránkban sok helyen feltűnik ez a téma, hiszen az ember mindig is nyitott volt az ehhez hasonló, elsőre nagyon elvontnak tűnő területek megismerésére. Sokféleképpen állnak az emberek ehhez a témához. "Egy olyan állapot felé tartunk, ahol a mesterséges intelligencia sokkal okosabb mint az ember és én úgy gondolom, hogy ez az idő öt éven belül el fog jönni." - \cite{misc1}. Egyelőre még nem tartunk ott, mint Elon Musk jóslatában, viszont mára a mesterséges intelligencia nem csak a popkultúrában jelenik meg, de az ipar számos területén is valamilyen módon, legyen szó robotikáról, közgazdaságtól, egészségügyről, autóiparról, de további számos terület ide sorolható.
+	% elmúlt években helyett konkrétabban.
+	% sok szó csere
+	%idézet így jó? forma és nyelv
+	\section{Diplomamunka részei}
+	A diplomamunkában bemutatásra kerül a robotok szerepe a XX. század ipari környezetében, ezen technológia fejlődési útja, az ipari robotok típusai, fejlődésük és felhasználási területeik, valamint csoportosítási lehetőségük. Fontos vizsgálati szempont a párhuzamos delta és GTPR robotok tulajdonságai, hasonlóságai és különbségei egyaránt, továbbá a GTPR előnyei a klasszikus delta robottal szemben. Kifejtésre kerül a klasszikus delta robot inverz és direkt kinematikai számításai. Megvizsgálásra kerül a robotika és a mesterséges intelligencia területének sajátosságai, ezen témák kapcsolata, felhasználási területük. Bemutatásra kerül a mesterséges intelligencián belüli területek, gépi tanulás fajtái. A szimulációs környezet tulajdonságai és használata is bemutatásra kerül, valamint a GTPR szimulációs környezetének megvalósításának menete és a környezettel több mérés elvégzése és összehasonlításával záródik a dolgozat.
+	
+	
+	%majd a végén, itt így részletezve jó? vagy legyn mondatokba kifejetve kicsit?
+	\pagebreak
+	
+	\section{Cél}
+	Miközben konzulenst kerestem a jelenlegi diplomamunka témához megtaláltam Szűcs Lászlót, aki bemutatatta egy különleges típusát a párhuzamos robotoknak. Ez a General Triangle Parallel Robot vagyis GTPR. A GTPR olyan kinematikai szerkezet, amely egy párhuzamos bázis és munkaháromszögekkel rendelkezik, de a GTPR egy fejletteb konstrukció mint egy klasszikus párhuzamos Delta robot. A Delta robotok a bázis és munkaháromszögei egyenlő oldalú háromszögek, ezzel szemben a GTPR háromszögei általános háromszögek, ami azt jelenti, hogy a Delta robot egy speciális esete a GTPR típusú robotnak \cite{misc2}.
+	
+	A diplomamunka célja, hogy többféle típusú mesterséges intelligencia implementációval mutassam be a GTPR működését, lehetséges vezérlését. A tanuló algoritmusok ellenőrzése és hatékonyságuk mérése egy virtuális környezetben szimulált GTPR robot mozgásánák elemzésével, mérésével történik. Így a különböző mesterséges intelligencia architektúrák fejlesztése egyszerűbbé válik, mintha egy fizikai modellen valósúlnának meg a mérési eredmények rögzítése. 
+	
+
+	\pagebreak
+	
+	\section{Szakirodalom}
+	A szakirodalom fejezetben a kutatás során összegyűjtött, a mesterséges intelligencián alapuló robotvezérléshez kapcsolódó ismeret anyag kerül bemutatásra. Az irodalomkutatás fő célja robotika és mesterséges intelligencia alapvető megismertetése. 
+	
+	
+	\subsection{Robotika}
+	A robot szó egyaránt megjelenik a munka, a technológia és a művészet világában. Az évtizedek alatt mindegyik szubkultúrában változott a robot szó jelentése. A műszaki életben is több dolgot nevezünk robotnak. Általában a gyártástechnológiában használt elektromechanikai szerkezetet szokás robotnak hívni, mivel ezen a területen a legelterjedtebb a robotok használata. Az első elektromossággal működtetett robot a XX.század elején készült el és az emberéhez hasonló külső jegyekkel rendelkezett \cite{misc5}. Sok év telt el mire az iparban is robotak kezdtek alkalmazni. Az első ipari robot megjelenése óta eltelt közel 70 év és a technológia rohamléptekkel fejlődött, ma már egész másként gondolunk a robotokra mint 1954-ben. Ekkor találta fel George Devol az Unimate nevű programozható, elektronikusan vezérelhető,hidraulikus nehézemelő robotkart \cite{misc3}. A humanoid vagy ipari robotokon kívül ma egy egyszerűen, programozott mesterséges intelligenciával rendelkező csevegő program alkalmazást is robotnak hívunk. 
+\bigskip
+
+
+	Robot felhasználási területei \cite{misc6}:
+	\begin{itemize}
+	%behúzás????
+	\setlength{\itemindent}{3em}
+	        \item  \textit{Katasztrófaelhárítás} 
+			\item \textit{Katonaság}
+			\item \textit{Oktatás} 
+			\item \textit{Szórakoztatás}
+			\item \textit{Egészségügy}
+			\item \textit{Ipar}
+			\item \textit{Kutatás-fejlesztés}
+			\item \textit{Önvezetés}
+		\end{itemize}
+	
+	
+	
+A diplomunka témája nem korlátozódik kifejezetten a robotok egy felhasználási területére, ugyanakkor a GTPR létjogosultságot leginkább az ipar területén nyerhet, így az ipari robotok tulajdonságai kerülnek részletesebb bemutatásra.
+	\pagebreak
+
+	Hivatalosan a Nemzetközi Szabványügyi szervezet (ISO) 8373:2012 számú szabvány alapján az ipari robot automatikusan vezérelhető, újra programozható, többcélú elektronikus eszköz, amely három vagy több tengelyen végezhet mozgást, és amely helyben vagy mobilon rögzíthető ipari automatizálási feladatokat lát el \cite{misc4}.
+	
+	Ipari robotok alkalmazása akkor válhat rentábilissé, amikor egy olyan feladatok kell elvégezni a gyártás során, amelyet hatékonyabban tud tenni, mint az ember által elvégzett munka. Ez nem mindig egyételmű, hiszen előfordulhat olyan eset amikor bár sokkal gyorsabban elvégzi az adott munkát a robot, de nincs kellő precizitása az adott munkához, ezért a minőség az elvárt alatt lesz. Iparirobotok alkalmazásának tipikus alkalmazási területei közé tartozik a pont vagy ívhegesztés, összeszerelés, festés, nagy súly megemelése, felvétel és meghatározott helyre mozgatás, termékellenőrzés, termék tesztelés. 
+    
+    
+    \subsubsection{Robotok fajtái}
+    Minden ipari robot típus eltérő tulajdonságokkal rendelkezik, ezáltal nem mindegyik robot alkalmas akármilyen feladat elvégzésére. A megfelelő berendezés kiválasztás esszenciális lépés a gyártástechnológiai folyamat megtervezésénél. 
+    \bigskip
+    
+    
+	Az ipari robotok típusai:
+	\begin{itemize}
+	\setlength{\itemindent}{3em}
+			\item \textit{Descartes robotok},
+			\item \textit{Selective Compliance Assembly Robot Arm robotok  (SCARA)},
+			\item \textit{Csuklós robotkarok},
+			\item \textit{Párhuzamos/Delta robotok},
+			\item \textit{Robottargoncák}, stb.
+		\end{itemize}
+		\bigskip
+		
+		  
+		\textbf{Az ipari robotok általános alkotórészei:}
+	\begin{itemize}
+	\setlength{\itemindent}{3em}
+	        \item \textit{Bázis:} a robot alapját biztosító, általában statikus elem 
+	        \item \textit{Vezérlő:} az áramellátásért valamint a robot mozgásáért felelős eszközöket tartalmazza.
+			\item \textit{Tanító eszköz:}  robot programozásáért felel.
+			\item \textit{Szerszám/megfogó:} a manipulátorhoz csatlakoztató, konkrét feladat elvégzésére alkalmas eszköz.
+		\end{itemize}
+    
+    Az ipari környezetben alkalmazott robotok kinematikai tulajdonságai aspektusából létezik nyílt vagy zárt hurkú. Nyílt hurkú az a robot, amelynek a összekötő kapcsolatai nincsenek egymásra hatással. Ilyen például a SCARA típusú robot. Zárt hurkú az az eszköz, amelynél a kapcsolatok hatással vannak egymásra, ezáltal a szerszám vagy megfogó pozíciójára is. Ilyen például a Delta robot. 
+    \begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\linewidth]{img/openclose.png}
+		\caption[Zárt/nyílt hurkú robotok]{Zárt/nyílt hurkú robotok (forrás: https://tinyurl.com/ycksn9u5)}
+		%http://www.sze.hu/~ballagi/Robottechnika/Robottechnika2_NGB_AU025_2-eloadas1.pdf
+		\label{fig:robotik-bin-picking}
+	\end{figure}
+    
+    Különböző típusú ipari robotok fizikai tulajdonságai akár nagymértékben is eltérhetnek egymáséitól. Bizonyos soros kialakítású robotkarok és Delta robotok teherbírási képessügök között nagyságrendekben mérhető különbség van. Viszont a Delta robot igen nagy gyorsaságának köszönhetően jó hatékonyságot tud elérni egy automatizált gyártórendszer conveyoron történő pick-and-place típusú feladata elvégzése közben. 
+    
+    Másként megfogalmazva létezik soros és párhuzamos kialakítás. Soros megvalósítás esetén a manipulátor részei egymáshoz soros módon kapcsolódnak. Ez a soros manipulátor hivatott összekötni a manipulátort a bázissal. A párhuzamos kialakításnál a bázis és a beavatkozó párhuzamosan helyezkednek el egymással.
+    
+   % \pagebreak
+	\subsubsection{Párhuzamos robotok}
+	
+	A párhuzamos robotok felhasználási területe nagyon tág, mivel a közös, párhuzamosságon alapuló tulajdonságuk mellett az ipari robotok fejlődése során sok különféle kialakítású párhuzamos robot látta meg a napvilágot. A fejlesztések fő motivációja a berendezés által minél nagyobb elérhető mozgási sebesség elérése volt. Különböző fejlesztések nagyszerű eredményeket hoztak, emiatt a párhuzamos robotok ma az egyik legelterjedtebbek az iparban. A XX.század második felében történt az igazán nagy áttörés, hiszen ekkor született meg a Delta robot ötlete, ami máig legsikeresebb párhuzamos robotfajta. 
+	
+	\paragraph{Delta robot} \mbox{}\\
+	\smallskip
+	A párhuzamos robotok új irányzata 1981-ben született meg  az Ecole Polytechnique Fédérale de LausanneReymond (EPFL) professzora, Robert Clavel ötlete alapján. Doktori disszertációjában fektette le egy olyan párhuzamos robot alapjait amely paralelogrammákból áll valamint három transzlációs és egy forgási szabadságfokkal rendelkezik \cite{misc8}. 
+	A Clavel féle Delta robot olyan feladatok végrahajtására alkalmas, amelyek megkövetelik a gyors és pontos munkavégzést. Bizonyos pick-and-place, delta robot kivitelezések képesek másodpercenkénti 2-3 felvételre is \cite{misc9}. A gyorsaságban rejlik erőssége a soros robotokhoz képest, ugyanakkor teherbírása nem versenyezhet utóbbiakéval. A FANUC M-2000iA típusú soros robot igen nagy teherbíró képességgel rendelkezik \cite{misc7}. Ez a berendezés képes 2 tonnánál nagyobb tömeggel rendelkező testet is felemelni és mozgatni, amíg egy FANUC M-1iA/1HL Delta csupán 1 kg tömegű testet képes a határértéken belül kezelni \cite{misc10}.
+	
+	
+	
+
+	
+	
+
+	\begin{figure}[h!]
+		    \centering
+		    \includegraphics[width=0.8\linewidth]{img/delta_parts.png}
+		    \caption[Delta robot részei]{Delta robot részei (forrás: https://www.wittenstein.co.uk/delta-robot/)}
+		    \label{fig:parallel_robot_1}
+	\end{figure}
+	\pagebreak
+	\subparagraph{Delta robot alkotórészei} 
+	\begin{enumerate}
+	\setlength{\itemindent}{2em}
+	        \item \textit{Statikus bázis -} A Delta robot alapját biztosító elem. A bázison helyezkednek el a mozgatásért felelős aktuátorok, egymáshoz képest meghatározott távoságra.
+	        \item \textit{Aktuátor -} Rendszerint villamosmeghajtású motorok, de lehetnek pneumatikus vagy hidraulikus meghajtások is.
+			\item \textit{Tengely -} Az aktuátorok és a felkarok találkozási pontjának középponja.
+			\item \textit{Felkar} 
+			\item \textit{Alkar} 
+			\item \textit{Felső gömbcsukló -} Felkar és alkar találkozásánál lévő kapcsolat
+			\item \textit{Munka háromszög - } A három alkar találkozási pontjában helyezkedik el. Szerepe a serszám/megfogó rögzítése.
+			\item \textit{Szerszám/Megfogó - } Az elvégzendő feladattól függ a szerszám/megfogó típusa vagy kialakítása.
+			\item \textit{Alsó gömbcsukló -} Az alkarok és a munkaháromszög kapcsolatait valósítja meg.
+		\end{enumerate}
+		
+		Az alkarok és a felkarok csatlakozásai, az alkarok és azok kapcsolata a munkaháromszög alkotnak egy paralelogramma mechanizmust. Ez teszi lehetővé, hogy a Delta robot munka és bázisháromszöge a működése során végig párhuzamos állapotban maradjanak egymással. 
+		\subparagraph{Delta robot erősségei és gyengeségei:} \mbox{}\\
+	    Egy ipari robot tulajdonságainak hasznosságának meghatározása feladat specifikus. Ugyanakkor a hasznosság megállapításához összehasonlítást kell végezni az egymáshoz viszonyított jellemzőik tekintetében és így egyértelműen leírhatóak a elvégzendő munka viszonylatában az eszköz erőssége vagy gyengesége. Azonos feladat megoldására alkalmazott soros robothoz képest egy Delta robot kevésbé robusztus felépítésű, ezáltal sérülékenyebb. Ugyanakkor esetleges javítása kevésbé költséges, mint egy soros roboté. Továbbá a Delta robot felépítése egyszerűbb, tovább könnyítve az esetleges javítás komplexitását. A Delta robot aktuátorai az elhelyezkedésüknél fogva helytakarékosabbá teszik egy soros robothoz képest, ezáltal nagyobb számú eszköz helyezhető el egymás mellett ugyanakkora helyen. 
+	\pagebreak
+	\paragraph{Delta robot kinematikája} \mbox{}\\
+	
+	Az ipari robotok kinematikájának területe általánosan a robotok mozgó részeinek matematikai leírásával foglalkozik különböző nézőpontból. A mozgásokat egy Descartes féle három dimenziójú vonatkoztatási rendszerhez viszonylatában vizsgáljuk. 
+	\bigskip
+	
+	
+		A kinematikai vizsgálatok módjai: 
+	\begin{itemize}
+	\setlength{\itemindent}{3em}
+	    \item Inverz kinematika
+	    \item Direkt kinematika
+	\end{itemize}
+	A két fajta vizsgálati mód lehetőséget ad arra, hogy meghatározzuk a delta robot bizonyos geometriai jellemzőit. Az inverz kinematikai leírás esetén szükséges ismernünk a munkaháromszögünk középpontjának vagy a munkaháromszögünkön elhelyezett szerszám illetve megfogó pontos helyzetét a Descartes féle viszonyítási rendszerben. Ezt a bázisháromszög középpontjában lévő O(\(\emptyset,\emptyset,\emptyset\)) ponthoz viszonyítjuk. Ezen pontok segítségével meghatározhatjuk a bázisháromszög és a felkar által bezárt előjelhelyes \(\theta\) szöget minden karra. Direkt kinametikai leírás esetén a bázishároszög és a karok által bezárt Theta szögek ismeretének segítségével határozzuk meg a munkaháromszög/szerszám pozícióját a térben. 
+	\bigskip
+	
+	%Vajon kell jobban részletezni a kinematikát??
+	Nevezetes pontok az inverz és direkt kinematika aspektusából az 1-es karra vizsgálva:
+	\begin{itemize}
+	\setlength{\itemindent}{3em}
+	    \item \(E_{0}\) - Munka háromszög középpontja, ismert pont
+	    \item \(E_{1}\) - Vizsgált karhoz tartozó paralelogramma rövidebb élének alsó felezőpontja 
+	    \item \(E'_{1}\) - Vizsgált karhoz tartozó paralelogramma egyik csúcsa
+	    \item \(J_{1}\) - \(E_{1}\) köré írt körív egy pontja és a vizsgált kar felső gömbcsuklója
+	     \item \(J'_{1}\) - Vizsgált kar felső gömbcsuklójának új állapota
+	    \item \(F_{1}\) - Vizsgált kar felkar forgástengelye
+	    \item \(\theta_{1}\) - Vizsgált kar keresett forgásszöge
+	    \item \(r_{f}\) - Vizsgált kar felkar, \(F_{1}\) köré írt kör sugara
+	\end{itemize}
+	\begin{figure}[h!]
+		    \centering
+		    \includegraphics[width=0.65\linewidth]{img/delta_kin_2.png}
+		    \caption[Delta robot részei]{Delta robot részei (forrás: https://www.wittenstein.co.uk/delta-robot/)}
+		    \label{fig:delta_kin_2}
+	\end{figure}\mbox{}\\
+	
+	\begin{figure}[h!]
+		    \centering
+		    \includegraphics[width=0.7\linewidth]{img/delta_kin_1.png}
+		    \caption[Delta robot részei]{Delta robot részei (forrás: https://www.wittenstein.co.uk/delta-robot/)}
+		    \label{fig:delta_kin_1}
+	\end{figure}\mbox{}\\
+Inverz kinematikai számítások:
+
+
+
+Munkaháromszög éleinek távolsága a középponttól:
+    \begin{equation}
+	 E_{0}E_{1}=\frac{e}{2}\tan30°=\frac{e}{2\sqrt{3}}
+	\end{equation}
+	
+	
+	Munkaháromszög egy csúcsának koordinátája:
+	
+	\begin{equation}
+	 E'_{1}(\emptyset,y_{0}-\frac{e}{2\sqrt{3}},z_{0})
+	\end{equation}
+	
+	
+	\begin{equation}
+	 E'_{1}J_{1}=\sqrt{E_{1}J_{1}^2-E_{1}E'_{1}^2}=\sqrt{r_{e}^2-x_{0}^2}
+	\end{equation}
+	Vizsgált kar aktuátorának forgástengelyének középpontjának a koordinátája:
+	\begin{equation}
+	 F_{1}(\emptyset,-\frac{f}{2\sqrt{3}},\emptyset)
+	\end{equation}
+	
+
+	Az \(F_{1}\) köré írt kör egyenlete:
+	\begin{equation}
+	 (y_{J_{1}}-y_{F_{1}})^2+(z_{J_{1}}-z_{F_{1}})^2=r_{f}^2
+	\end{equation}
+	\begin{equation}
+	 (y_{J_{1}}+\frac{f}{2\sqrt{3}})^2+z_{J_{1}}^2=r_{f}^2
+	\end{equation}
+	Az \(E_{1}\) köré írt kör egyenlete:
+	\begin{equation}
+	 (y_{J_{1}}-y_{E'_{1}})^2+(z_{J_{1}}-z_{E'_{1}})^2=r_{e}^2-x_{0}^2
+	\end{equation}
+	\begin{equation}
+	 (y_{J_{1}}-y_{0}+\frac{e}{2\sqrt{3}})^2+(z_{J_{1}}-z_{0})^2=r_{e}^2-x_{0}^2
+	\end{equation}
+		\begin{equation}
+	 J_{1}(\emptyset,y_{J_{1}},z_{J_{1}})
+	 \end{equation}
+		A vizsgált kar aktuátorának a tengelyéhez tartozó szög kiszámításának az egyenlete a kör egyenletei alapján: 
+	\begin{equation}
+	   \theta_{1}=\arctan \frac{z_{J1}}{y_{F1}-z_{J1}}
+	\end{equation}\mbox{}\\
+	%kell levezetés????
+	%\autoref{fig:inv_kin_kit_pont} kell ide?
+	
+
+	\begin{figure}[h!]
+		    \centering
+		    \includegraphics[width=0.4\linewidth]{img/delta_kin_3.png}
+		    \caption[Delta robot részei]{Delta robot részei (forrás: https://www.wittenstein.co.uk/delta-robot/)}
+		    \label{fig:delta_kin_3}
+	\end{figure}\mbox{}\\
+	\begin{figure}[h!]
+		    \centering
+		    \includegraphics[width=0.4\linewidth]{img/delta_kin_4.png}
+		    \caption[Delta robot részei]{Delta robot részei (forrás: https://www.wittenstein.co.uk/delta-robot/)}
+		    \label{fig:delta_kin_4}
+	\end{figure}\mbox{}\\
+	\pagebreak
+	
+	Direkt kinematikai számítások:
+	
+	A felső gömbcsuklók állapota a \(\theta\) szögek megváltozása után: 
+	
+
+	\begin{equation}
+	   J'_{1} (\emptyset;-\frac{f-e}{2\sqrt{3}-r_{f}\cos\theta_{1}};-r_{f}\sin\theta_{1})
+	\end{equation}\mbox{}\\
+	\begin{equation}
+	   J'_{2} ((\frac{f-e}{2\sqrt{3}}+r_{f}\cos\theta_{2})\cos30°;(\frac{f-e}{2\sqrt{3}}+r_{f}\cos\theta_{2})\sin30°;-r_{f}\sin\theta_{2})
+	\end{equation}\mbox{}\\
+	\begin{equation}
+	   J'_{3} ((\frac{f-e}{2\sqrt{3}}+r_{f}\cos\theta_{3})\cos30°;(\frac{f-e}{2\sqrt{3}}+r_{f}\cos\theta_{3})\sin30°;-r_{f}\sin\theta_{3})
+	\end{equation}\mbox{}\\
+	
+	
+	A gömbcsuklók új pozíciójának középpontjaiból felírható a karokra vonatkozó gömbök egyenletei. Az egyenletekben a gömbcsukló koordinátáira a karok indexével vannak hivatkozva (\(J_{1}(x_{1},y_{1},z_{1}))\),\(J_{2}(x_{2},y_{2},z_{2}))\),\(J_{3}(x_{3},y_{3},z_{3}))\):
+	
+	\begin{equation}
+	   x^2+y^2+z^2-2yy_{1}-2zz_{1}=r_{e}^2-y_{1}^2-z_{1}^2 
+	\end{equation}
+	\begin{equation}
+	   x^2+y^2+z^2-2xx_{2}-2yy_{2}-2zz_{2}=r_{e}^2-x_{2}^2-y_{2}^2-z_{2}^2
+	\end{equation}
+		\begin{equation}
+	   x^2+y^2+z^2-2xx_{3}-2yy_{3}-2zz_{3}=r_{e}^2-x_{3}^2-y_{3}^2-z_{3}^2
+	\end{equation}
+	\begin{equation}
+	   w_{i}=x_{i}^2+y_{i}^2+z_{i}^2
+	\end{equation}
+	\begin{equation}
+	   x_{2}x+(y_{1}-y_{2})y+(z_{1}-z_{2})z=\frac{(w_{1}+w_{2})}{2}
+	\end{equation}
+	\begin{equation}
+	   x_{3}x+(y_{1}-y_{3})y+(z_{1}-z_{3})z=\frac{(w_{1}+w_{3})}{2}
+	\end{equation}
+	\begin{equation}
+	   (x_{2}-x_{3})x+(y_{2}-y_{3})y+(z_{2}-z_{3})z=\frac{(w_{2}+w_{3})}{2}
+	\end{equation}
+	\begin{equation}
+	   x=a_{1}z+b_{1}
+	\end{equation}
+	\begin{equation}
+	   y=a_{2}z+b_{2}
+	\end{equation}
+	\begin{equation}
+	   a_{1}=\frac{1}{d}((z_{2}-z_{1})(y_{3}-y_{1})-(z_{3}-z_{1})(y_{2}-y_{1}))
+	\end{equation}
+	\begin{equation}
+	   a_{2}=-\frac{1}{d}((z_{2}-z_{1})x_{3}-(z_{3}-z_{1})x_{2}))
+	\end{equation}
+	\begin{equation}
+	   b_{1}=-\frac{1}{2d}((w_{2}-w_{1})(y_{3}-y_{1})-(w_{3}-w_{1})(y_{2}-y_{1}))
+	\end{equation}
+	\begin{equation}
+	   b_{2}=\frac{1}{2d}((w_{2}-w_{1})x_{3}-(w_{3}-w_{1})x_{2}))
+	\end{equation}
+	\begin{equation}
+	   d=(y_{2}-y_{1})x_{3}-(y_{3}-y_{1})x_{2}
+	\end{equation}
+	4.21 és 4.22 egyenleteket a 4.11-es egyenletbe helyettesítve a következő egyenlet megoldásával meghatározható \(z_{0}\) értéke és visszahelyettesítve \(x_{0}\) és \(y_{0}\) értékét is.
+	\begin{equation}
+	   (a_{1}^2+a_{2}^2+1)z^2+2(a_{1}+a_{2}(b_{2}-y_{1})-z_{1})z+(b_{1}^2+(b_{2}-y_{1})^2+z_{1}^2-r_{e}^2)=0
+	\end{equation}
+	
+	
+	\pagebreak
+	\paragraph{GTPR} \mbox{}\\
+	A GTPR vagy más néven GTP(S)R robot a Clavel féle klasszikus delta robot általánosítása. Az "S" tagot a GTPR ötletgazdája Somló János miatt szokták használni \cite{misc2}. A következő sorok Szűcs László Workspace Investigation of Generalized Triangle Parallel Robot diplomamunkája alapján készültek \cite{gtpr_szucs}. A GTPR alkalmazása számos előnnyel járhat egy általános delta robothoz képest. Az ilyen típusú robotok lényege, hogy a bázisháromszögnek nem feltétlenül kell szabályos háromszög formájúnak lennie, azaz a bázisháromszög formájának tetszőleg típusú háromszög választható. Továbbá nem elvárás a robotkarok hosszainak egyenlősége sem. GTPR esetében hasonló módon történik az inverz és direkt kinematikai számítások. Számításokat Szűcs László diplomamunkájában részletezi \cite{gtpr_szucs}. A klasszikus delta és GTPR bázisháromszögének összehasonlítása látható a \ref{fig:gtpr} ábrán \cite{gtpr_szucs}.
+	
+	\begin{figure}[h!]
+		    \centering
+		    \includegraphics[width=0.8\linewidth]{img/gtpr.png}
+		    \caption[Delta robotok munkaháromszögének összehasonlítása]{Delta robotok munkaháromszögének összehasonlítása }
+		    \label{fig:gtpr}
+	\end{figure}
+	A seciális bázisháromyszög és karok méretezéséből fakadóan a GTPR képes a klasszikus delta robottól eltérő munkaterület bejárására. A \ref{fig:gtpr_2} ábrán látható munkaháromszög méretezéssel az \(Y\) irányú munkaterület megnövekedését eredményezi \cite{misc2}. 
+	
+		\begin{figure}[h!]
+		    \centering
+		    \includegraphics[width=0.25\linewidth]{img/gtpr_2.png}
+		    \caption[GTPR lehetséges munkaháromszög kialakítása]{GTPR lehetséges munkaháromszög kialakítása}
+		    \label{fig:gtpr_2}
+	\end{figure}
+	
+	\pagebreak
+	\subsection{Mesterséges intelligencia}
+	
+	A mesterséges intelligencia az 1980-as években jelent meg először ipari környezetben. Ekkor alkotta meg a Digital Equipment Corporation (DEC), az R1 nevű szakértői rendszert \cite{r1}. Az R1, a DEC által gyártott és forgalmazott termékek eladását segítette. Ez a rendszer 1986-os évben több tíz milliós nyereséget hozott a vállalatnak és a mai napig kimutatható anyagi hasznot hoz ez az algoritmus. 
+	
+	
+	Több hasonlóságot is felfedezhetünk a mesterséges intelligencia és a robotok között. Azon túl, hogy az utóbbi évtizedekben mindkét tudományág popularitást nyert, a robotikát és a mesterséges intelligenciát is sok esetben a science-fiction inspirálta. A fejlesztésekben úttörőnek számító szakemberek további iheletet merítettek az emberi szervezet működéséből mind a robotika mind a mesterséges intelligencia területén.
+	
+	Mai napig vita tárgyát képezi az intelligencia definíciója, ebből kifolyólag a mesterséges intelligenciának sincsen mindenki által elfogadott, általános meghatározása. A témában talán legismertebb Alan Turing angol matematikus munkássága. Ő fogalmazta meg először 1946-ban az intelligens gépek lehetőséget \cite{misc11}, valamint ő alkotta meg a Turing tesztet. Turing gondolatkísérletében két ember és egy számítógép vesz részt. Az egyik ember a kérdező, a másik ember és a számítógép a válaszoló. A teszt résztvevői kizárólag számítógépen, szöveges formában kommmunikálhatnak egymással úgy, hogy egymást nem láthatják. A teszt a kérdező ember megtévesztésén alapul (úgynevezett Imitation game). A feladat, hogy képes-e a kérdező megállapítani melyik válaszoló a számítógép és melyik az ember pusztán a válaszuk alapján. Amennyiben a kérdező fél egyértelműen el tudja dönteni a számítóépről, hogy nem ember, úgy a gép a teszten elbukik. Minden más esetben a számítógép sikeresen teljesíti a Turing tesztet.
+	
+	
+	Az "Artificial Intelligence - A Modern Approach" című könyvben egy kibővített megközelítésből vizsgálják a mesterséges intelligencia meghatározását. Stuart Russel és Peter Norvig, a "What is AI?" kérdést négy különböző szempont alapján válaszolják meg. 
+	A következő kategóriákba sorolható mesterséges intelligencia fajtái \cite{misc12}:
+	
+	\begin{enumerate}
+	\setlength{\itemindent}{3em}
+	        \item \textit{Emberként gondolkodó rendszer - } Emberi gondolkodáshoz hasonló tevékenységek végrehajtása: mérlegelés, tanulás, fejlődés. Elmével rendelkező gépek.
+	        \item \textit{Emberként viselkedő rendszer - } Olyan feladat végrehajtása amihez intelligencia szükséges amikor ember hajtja végre.
+	        \item \textit{Racionálisan gondolkodó rendszer - } A gép megfigyelés útján képes önálló  következtetést levonni és ez alapján cselekedni.
+	        \item \textit{Racionálisan viselkedő rendszer - } A gép mások által levont következtetésekhez hasonló módon viselkedik.
+		\end{enumerate}
+		
+		
+	Létezik az előző felsorolásnak egy egyszerűsített formája, ami manapság a legelfogadottabb. Általánosabban megfogalmazva úgynevezett "weak" vagyis gyenge és "strong" vagyis erős mesterséges intelligenciát különböztethetünk meg egymástól. A gyenge mesterséges intelligencia csupán a tényleges gondolkodás látszatát kelti, míg az erős valójában képes döntést hozni, az emberi agy működését leutánozva. 
+	\bigskip
+	
+	Mesterséges intelligencia tervezésének lépései \cite{misc13}:
+	\begin{enumerate}
+	\setlength{\itemindent}{3em}
+	        \item \textit{Mesterséges intelligencia elsődleges céljának meghatározása}
+	        \item \textit{Hatékony működéshez szükségesadatok típusának és mennyiségének meghatározása vagy becslése}
+			\item \textit{Kódolási architektúra meghatározása}
+			\item \textit{Rendszer betanítása}
+			\item \textit{Rendszer működésének tesztelése}
+			\item \textit{Esetleges hibás működés felismerése}
+			\item \textit{Szükséges változtatások eszközölése az architektúrában}
+			\item \textit{Szükséges változtatások az adatmodellben}
+			\item \textit{Ismétlés az 5. lépéstől a 8. lépésig, amíg a rendszer az elvárt hatékonyságot nem éri el}
+		\end{enumerate}
+		
+		%neurális hálók? - anatómiai vonatkozás...
+	\subsubsection{Gépi tanulás (Machine Learning - ML)}
+	
+	\textit{"Programming computers to learn from experience should eventually eliminate the need for much of this detailed programming effort"} - azaz, a számítógépek tapasztalaton keresztül történő tanulásra programozása végül a programozásba fektetett erőfeszítést szükségtelenné teszi. Arthur Lee Samuel a gépi tanulás (továbbiakban: ML) kifejezés megalkotója írta le egy 1957-es tanulmányában \cite{ml1}. 
+	
+\textit{" [...] a machine learns with respect to a particular task T, performance metric P, and type of experience E, if the system reliably improves its performance
+P at task T, following experience E."} - azaz, egy gép egy adott T feladatot, P teljesítménymutatóra és E tapasztalattípusra vonatkozóan tanul, ha a rendszer megbízhatóan javítja P teljesítményét a T feladatnál, az E tapasztalatot követve. Tom M. Michelle amerikai informatikus megfogalmazása konkrétabban fogalmazza meg a ML-lel szemben támasztott elvárásainkat \cite{misc14}. 
+	
+	Az ML a mesterséges intelligencia egyik leggyakrabban használt ága. Ez a tudományág lehetővé teszi, hogy egy számítógép programozás nélkül önállóan tanuljon. Feladatuk lehet megfelelő minta létrehozása, vagy valamilyen előrejelzés készítése bemeneti adatmodellek alapján. Az ML lényege abban rejlik, hogy a számítógép elsajátítsa az emberi gondolkodás és tanulást mechanizmusát. Ez azért lehet számunkra előnyös, mert miután a a gép valamilyen módon elsajátította a tanulás képességét, gyorsabb fejlődésre képes mint egy ember. Továbbá akár olyan kimenetet is eredményül tud szolgáltatni, amely több száz bemenő paraméter függőséggel rendelkezik. 
+	
+	\bigskip
+	\textbf{Az ML modellje \cite{ml_review}:}
+	\begin{figure}[h!]
+		    \centering
+		    \includegraphics[width=1.0\linewidth]{img/ml_method.png}
+		    \caption[ML]{ML lépései}
+		    \label{fig:ml_method}
+	\end{figure}\mbox{}\\
+	
+	Az ML lépései iterációkból állnak. Az ismétlődő folyamat legelső állomása az adatok megszerzése, feldolgozása. Ezeket az információkat valamilyen külső környezet szolgáltatja a rendszer számára. Az adatmodell attribútumainak minőségi és mennyiségi tényezői szignifikánsak, vagyis nem lehet triviális szabályt felállítani általános ML modellekhez. Ugyanis különböző tanulási algoritmusokhoz eltérő kiterjedésű adatmodellre van szükségünk. 
+	
+	Különböző ML problémák megoldásához szükséges adatmodellek méretére:
+	\begin{itemize}
+	\setlength{\itemindent}{3em}
+	    \item Képosztályozás: több tízezer vagy annál is nagyobb számú kép.
+	    \item Regresszió: megfigyelt jellemzőknél 10-szer több megfigyelés. 
+	\end{itemize}
+	Az előbbi problémák megoldásához szükséges adatmodell méretek intuitív módon kerültek megállapításra \cite{misc15}.
+	A rendszer a külső környezet által szolgáltatott adatokat valamilyen módon feldolgozza. A tanulási folyamat szintén minden tanulási modellnél egyedi.
+	
+	
+	Tanulási stratégiák \cite{ml_review}:
+	
+	\begin{itemize}
+	\setlength{\itemindent}{3em}
+	    \item Gépies tanulás - rote learning
+	    \item Következtetéses tanulás - inductive learning
+	    \item Példák tanulása - learning of examples
+	    \item Megfigyelés tanulása - learning of observed
+	    \item Hasonlóságokon alapuló tanulás - analogical learning
+	    \item Magyarázott tanulás - explained learning
+	\end{itemize}
+	
+	Az tanulás során értelmezett, vagyis "megtanult" modellt, a rendszer az erre kialakított tárolóegységekbe helyezi és későbbi felhasználás céljából elmenti azt. A tárolt tanuló modell végrehajtása az első ismétlés előtti utolsó lépés. Végrehajtás után ismételten a tanulás következik. A végrehajtás eredményét visszacsatolt formában adja át a tanuló résznek.
+	
+	
+	Az ML terület több száz különböző tanulási algoritmust foglal magában \cite{abs_beg}. A rendelkezésre álló adatmennyiség kiválasztása valamint a tanulási stratégáik meghatározása előtt fontos elhatározni, hogy a három fő ML kategóriából melyiket választjuk a problémánk megoldására. 
+	
+	
+	\begin{figure}[h!]
+		    \centering
+		    \includegraphics[width=1.0\linewidth]{img/ml.png}
+		    \caption[ML említése könyvekben]{ML említése könyvekben 1970-2019 között (forrás: tinyurl.com/4vtzfnxh)}
+		    \label{fig:ml_1}
+	\end{figure}\mbox{}\\
+	
+	\paragraph{Gépi tanulás fajtái}\mbox{}\\
+	
+	
+	Az ML modellek legalapvetőbb tulajdonsága, hogy a tanulási folyamatban milyen szinten van beleszólása az embernek. Ez alapján három nagyobb kategóriára oszthatjuk fel az ML igen széles területét \cite{abs_beg}. 
+	\begin{itemize}
+	\setlength{\itemindent}{3em}
+	    \item Felügyelt tanulás - Supervised learning
+	    \item Felügyelet nélküli tanulás - Unsupervised learning 
+	    \item Megerősített tanulás - Reinforcment learning
+	\end{itemize}
+	
+	
+	\subparagraph{Felügyelt tanulás}\mbox{}\\
+	
+	
+	A felügyelt tanulás esetében egy felügyelő/tanító is részt vesz a tanulási folyamatban. A bemenő és kimeneti paraméterek egyértelműen definiáltak. A felügyelő feladata, hogy a tanító adatokat azonosító címkével lássa el. Továbbá a tanítás eredményeként kapott kimenetet összehasonlítsa a címkékkel. A különbség reprezentálja a tanulás hatékonyságát. A folyamat tovább folytatódik, illetve ismétlődik, amíg a felügyelő által vizsgált kimenet nem az elvárt eredményt szolgáltatja. Ez esetben a felügyelő változtat a modellen.
+	
+	Speciális területei a klasszifikáció, melynek célja a csoportosítás és a regresszió amely különböző előrejelzéseket képes adni, megfelelő változók ismeretében.
+	
+	\subparagraph{Felügyelet nélküli tanulás}\mbox{}\\
+	Felügyelet nélküli tanulási modellnél a bemeneti és kimeneti minta nem meghatározott. A rendszer csupán a bemeneti adatmodellt elemzi, és a megfigyelések alapján ismer fel különböző sémákat.
+	
+	Speciális területe a klaszterezés, amely meghatározhat valamely mintától való illeszkedést vagy eltérést. Segítségével adatok egyszerűsítését lehet végezni, gyakran adatmodellek előfeldolgozására használják.
+	\subparagraph{Megerősítő tanulás}\mbox{}\\
+	Megerősítő tanulási technika (továbbiakban Reinforcement learning) szintén az iteráción alapszik. Ennél a megoldásnál a gépnek egy megadott feladat elvégzését jelölik ki. Ilyen lehet egy stratégiai játék megnyerése, vagy egy robot vezérlése. egy ismétlési fázisban a gép próbálkozással jut közelebb vagy távolabb a kívánt állapothoz. Az eredmény sikerességét jutalommal van díjazva, ami lehet pozitív és negatív egyaránt. 
+	\bigskip
+
+	\textbf{Q-learning}
+	
+	
+	A megerősítő tanulás egyik ága Q-learning. Ez az egyik legegyszerűbben implementálható gépi tanulási algoritmus. Iterációkból álló folyamat, amely minden állapotában frissítünk egy táblát az adott állapot minőségi jellemzőit felhasználva. 
+	
+	
+	\bigskip
+	A Q-learning modell részei \cite{misc18}: \label{fig:q_learn}
+	\begin{itemize}
+	\setlength{\itemindent}{3em}
+	    \item Ügynök - agent: Aktív résztvevő a rendszerben, ami a gépet reprezentálja. Ez hajtja végre a műveletet és az általa végrehajtott tevékenység lesz jutalmazva.
+	    	\item Környezet - environment: Viszonyítási rendszer, ahol létezik az "ügynök".
+	    	\item Művelet - action: Végrehajtott tevékenység, aminek a hatására megváltozik az "ügynök" "állapota".
+	    	\item Jutalom - reward: Amennyiben a „művelet” hatására közelebb került az „ügynök” az elvárt célhoz akkor pozitív jutalmat kap, ha nem akkor negatívat. Semleges eredményért semleges jutalmat kap.
+	    	\item Állapot - state: Minden iterációban rendelkezik új "állapottal" az "ügynök". Ez ad felvilágosítást a jellemzőiről.
+	    	\item Irányelv - policy: Az a stratégia amit a következő "állapot" elérése érdekében hajt végre az "ügynök".
+	    	\item Q tábla: Olyan mátrix, amely az összes iteráció "állapotait" és az "ügynök" fizikai jellemzőit tárolja.
+	\end{itemize}
+	
+	A Q tábla mátrix neve a "quality", vagyis minőség szóból ered. A következő állapot Q értékét a Bellman-egyenlettel lehetséges leírni \cite{misc16}:
+	\begin{equation}
+	 Q_{t+1}(s_{t},a_{t})= Q_{t}(s_{t},a_{t})+\alpha(r_{t+1}+\gamma \max_{a} Q_{t}(s_{t+1},a_{t})-Q_{(t)}(s_{t},a_{t}))
+	\end{equation}
+	
+	Egy döntési probléma értékét adja meg, bizonyos időpontban a kezdeti döntések függvényében. Diszkrét idejű optimalizálási problémák megoldására alkalmas.
+	
+	Egyenlet változói:
+	\begin{itemize}
+	\setlength{\itemindent}{3em}
+	    \item \(t\) - diszkrét idő egység
+	    \item \(s\) - állapot az adott időpillanatban 
+	    \item \(a\) - művelet az adott időpillanatban
+	    \item \(Q\) - Q tábla diszkrét időhöz tartozó értéke
+	    \item \(\alpha\) - tanulási faktor : Ez határozza meg a tanulási sebességet vagyis, hogy az új érték mennyire befolyásolja az előző értéket. Rendszerint állandó értéket használunk
+	    \item \(\gamma\) - discount factor: meghatározza, hogy különböző állapotokban mennyire szignifikánsnak tekinte a rendszer a jutalmat
+	    \item \(r\) - jutalom az adott időpillanatban
+	\end{itemize}
+	
+	\(Q_{t+n}(s_{t+k},a_{t+k}),\quad n\in [0,1] \wedge k\in[0,1] \wedge {n$\neq$k} \) - jellemzi az új illetve régi Q értékeket.
+	
+	
+	\(\gamma \max_{a} Q_{t}(s_{t+1},a_{t})\)  - becslést ad a jövendőbeli optimális értékről a discount factor függvényében.
+	
+	\bigskip
+	A Q tábla méretét nagymértékben meghatározzá a lehetséges felvehető állapotok, amik megnövelhetik a tanítási folyamat idejét. 
+	
+	
+	\pagebreak
+	\subsection{Szimulációs környezet}
+	
+	Az ML által vezérelt GTPR szimulációs modell az OpenAI segítségével valósult meg \cite{misc17}. Az OpenAI egy mesterséges intelligencia kutató és -fejlesztő vállalat, melynek küldetése, hogy a mesterséges általános intelligencia (Artificial General Intelligence - AGI) - amelyek a gazdaságilag legértékesebb munkában felülmúlják az embert – az egész emberiség javát szolgálja. Számos kutató és API (Application Programming Interface) fejlesztési mérföldkövet értek el 2016 óta, amelyek kapcsolódnak az ML Reinforcement learning valamilyen területéhez\cite{misc21}:
+	\begin{itemize}
+	\setlength{\itemindent}{3em}
+	    \item Generative Modells (2016. június 16.)
+        \item Robot that learns (2017. május 16.)
+        \item OpenAI Baselines: DQN (2017. május 24.)
+        \item Ingredients for Robotics Research (2018. február 26.)
+	\end{itemize}
+	
+	Az Ingredients for Robotics Research projekt fejlesztésének keretein belül több olyan környezetet hozott létre az OpenAI, melyek segítségével működő fizikai robotokat tanítottak be. A tanításhoz a Gym került felhasználásra.
+\bigskip
+	A Gym egy olyan könyvtár amely lehetőséget ad a megerősítő tanulási algoritmusok tanulmányozásához és fejlesztéséhez, továbbá végezhetünk összehasonlításokat mások implementációi által elért eredményeikkel \cite{misc19}. Előnyös lehet különféle vezérlési szimuláció megvalósításához, mivel nem tesz különbséget eltérő tulajdonságú ügynökök között. A Gym lehetővé teszi olyan tesztkörnyezetek létrehozását, amelyből könnyedén könyerhetőek a reinforcement learning megvalósításához és fejlesztéséhez szükséges információk. Ugyanakkor a környezet nem alkalmas a tanításra fizikai motor jelenléte nélkül.
+	
+	
+	\bigskip
+	
+	
+	Sokféle használható fizikai motor létezik az Open AI Gym-en belül is melyek különféle összetettségű, bonyolultságú és részletességű környezetek megvalósítására alkalmasak. 
+	\cite{misc20}:
+	\begin{itemize}
+	\setlength{\itemindent}{3em}
+	    \item Algorithms
+        \item Atari
+        \item Box2D
+        \item Classic control
+        \item MuJoCo
+        \item Robotics
+        \item Toy text  EASY
+	\end{itemize}
+	A GTPR szimulációs környezet a Robotics és MuJoCo eszköztárak segítségével kerül megvalósításra. A szimulációs környezetben mozgó, vizsgálható és mérhető GTPR testet XML típusú leíró file-ok segítségével lehet megvalósítani, melyek kifejtése a dolgozat későbbi részében kerül sor. 
+	
+
+	\pagebreak
+	\subsection{MuJoCo}
+	A MuJoCo egy olyan általános felhasználású fizikai motor, amely segíti a kutatást és fejlesztést a robotika, biomechanika, grafika és animáció területén, valamint más olyan területeken, ahol gyors és pontos szimulációra van szükség. Nevét a Multi-Joint dynamics with Contact rövidítéséből kapta. Eredetileg a Roboti LLC fejlesztette ki, majd a DeepMind megvásárolta és szabadon elérhetővé tette 2021 októberében azzal a céllal, hogy a MuJoCo nyílt forráskódú projektté váljon. A MuJoCo forráskódja elérhető a GitHub felületén a deepmind/mujoco almappában \cite{misc22}. 
+	\bigskip
+	
+	
+	A MuJoCo egy C/C++ könyvtár C API-val, amely kutatók és fejlesztők számára készült. A futásidejű szimulációs modul a teljesítmény maximalizálására van hangolva, és alacsony szintű adatstruktúrákon működik, amelyeket a beépített XML-elemző és fordító előre lefoglal. A felhasználó a natív MJCF jelenetleíró nyelven határozza meg a modelleket – egy olyan XML fájlformátumot, amelyet úgy terveztek, hogy az ember számára a lehető legjobban olvasható és szerkeszthető legyen. URDF modellfájlok betöltésére is van lehetőség, de a mujoco specifikus xml fájl betöltése kevésbé komplex feladat. A könyvtár interaktív megjelenítést tartalmaz natív grafikus felhasználói felülettel, OpenGL-ben renderelve. A MuJoCo emellett számos hasznossági függvényt tesz elérhetővé a fizikával kapcsolatos mennyiségek kiszámításához és vizsgálatához.
+	\bigskip
+	
+	A MuJoCo felhasználható olyan modellalapú számítások megvalósítására, mint például vezérlési szintézis, állapotbecslés, rendszerazonosítás, mechanizmustervezés, adatelemzés inverz dinamikán keresztül, valamint párhuzamos mintavétel a gépi tanulási alkalmazásokhoz. Hagyományosabb szimulátorként is használható, beleértve a játékokat és az interaktív virtuális környezeteket. 
+	
+	
+	\pagebreak
+	\subsubsection{MuJoCo példakód és fájlformátum}
+	Az MJCF nyelven leírt, XML formátumban mentett példa látható a következő képen, amelyet a beépített OpenGL vizualizációs eszköz jeleníti meg \cite{misc23}:
+	
+	
+	\begin{figure}[h!]
+		    \centering
+		    \includegraphics[width=1.0\linewidth]{img/hello.png}
+		    \caption[hello.xml példakód OpenGL vizualizáció]{hello.xml példakód OpenGL vizualizáció}
+		    \label{fig:ml_1}
+	\end{figure}\\
+	
+	A vizualizáció a hello.xml nevű fájl szimulációjával valósul meg.
+	
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1,
+bgcolor=white,
+fontsize=\footnotesize,
+linenos
+]
+{xml}
+<mujoco>
+   <worldbody>
+      <light diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1"/>
+      <geom type="plane" size="1 1 0.1" rgba=".9 0 0 1"/>
+      <body pos="0 0 1">
+         <joint type="free"/>
+         <geom type="box" size=".1 .2 .3" rgba="0 .9 0 1"/>
+      </body>
+   </worldbody>
+</mujoco>
+\end{minted}
+	Az MJFC vagy URDF nyelven íródott XML fájlból több objektum is példányosítható egy programon belül. A példányosítás alacsony szinten, úgynevezett mjModel elnevezésű objektumként történik. Az mjModel objektum létrehozásának több módja van. Az ember számára a legkönnyebben áttekinthető és módosítható módszer a következő:
+	\begin{enumerate}
+	\setlength{\itemindent}{2em}
+	    \item Szövegszerkesztővel létrehozott MJFC/URDF nyelvű XML típusú fájl
+        \item MuJoCo parser segítségével létrehozott mjCModel C/C++ típusú fájl
+        \item MuJoCo compiler-el történő fordítás eredményeként létrejövő mjModel
+	\end{enumerate}
+	
+	\subsubsection{MuJoCo leíró fájl által használt fájlok}
+	
+	Az MJFC és URDF típusú XML leírók úgy nevezett STL kiterjesztésű fájlokat használnak, mint a modell építőelemei. Az STL egy olyan fájlformátum, amelyet általában 3D nyomtatáshoz és számítógéppel segített tervezéshez (CAD) használnak. Az STL elnevezés egy elterjedt 3D nyomtatási technológia, a sztereolitográfia nevének rövidítése. Hivatkozhatnak rá Standard Triangle Language vagy Standard Tessellation Language néven is.
+	Minden fájl összekapcsolt háromszögekből áll, amelyek egy 3D modell vagy tárgy felületi geometriáját írják le. Minél összetettebb a terv, annál több háromszöget tartalmaz, és annál nagyobb a felbontás. 
+	Az STL-képek az .stl fájlnévkiterjesztésről, valamint a szín- és textúraadatok hiányáról ismerhetők fel \cite{misc24}.
+	\begin{figure}[h!]
+		    \centering
+		    \includegraphics[width=0.6\linewidth]{img/base_stl.png}
+		    \caption[Az XML által használt egyik STL elem]{Az XML által használt egyik STL elem}
+		    \label{fig:ml_1}
+	\end{figure}\mbox{}\\
+	
+	
+	\subsubsection{MuJoCo leíró fájl lehetséges elemei}
+	
+	A MuJoCo leíró fájl szerepe, hogy valamilyen fizikai állapotokkal rendelkezdő modellt definiáljon így elengedhetetlen, hogy a később létrejövő mjModel rendelkezzen különböző argumentumokkal, melyek leírják az adott modell fizikai tulajdonságait, legyen szó MJFC vagy URDF típusú XML fájlról. A MuJoCo compilerrel történő sikeres fordításához elengedhetetlen az előre meghatározott elemek használata az XML fájlon belül.
+	A GTPR szimuláció megvalósítása az MJFC típusú XML fájl segítségével történt. A legfontosabb MJFC elemek a következők:
+	\begin{itemize}
+	\setlength{\itemindent}{0em}
+	    \item mujoco:
+	    \begin{description}
+	    \setlength{\itemindent}{0em}
+        \item MJFC XML fájl legfelsőbb rétege, amely jelenléte elengedhetetlen. Egyetlen attribútuma a "model", amely a model nevét tartalmazhatja.
+	    \end{description}
+	    
+        \item compiler:
+	    \begin{description}
+	    \setlength{\itemindent}{0em}
+        \item Opcionális elem, mely többször is előfordulhat a leíró fájlban. Ez az elem a beépített compiler konfigurációjának megadására szolgál. Az elemzés és a fordítási fázis után már nincs hatása. Az itt található beállítások globálisak, és a teljes modellre vonatkoznak.
+        \item Több argumentuma is van. Mi az angle-t használjuk, ahol a radian-t állítjuk be mint a szögek alapértelmezett egysége.
+	    \end{description}
+        \item option:
+	    \begin{description}
+	    \setlength{\itemindent}{0em}
+        \item Futás idejű beállítások eszközölésére alkalmas elem.
+	    \end{description}
+	    
+	    \item asset:
+	    \begin{description}
+	    \setlength{\itemindent}{0em}
+        \item Eszközök meghatározásához használatos elem. Az STL kiterjesztésű fájlok neveit és elérési útjait határozzák meg az adott tartományon belül.
+	    \end{description}
+	    
+	    \item equality:
+	    \begin{description}
+	    \setlength{\itemindent}{0em}
+        \item Ezen elem az egyenlőségi kényszerek leírására alkalmas. Többféleképpen, különböző argumentumok segítségével definiálhatjuk ezeket a kényszereket.
+        \item A connect argumentum segítségével egy-egy pontban van lehetőség két test összekötésére egy-egy pontban.
+	    \end{description}
+	    
+	    
+        \item worldbody:
+	    \begin{description}
+	    \setlength{\itemindent}{0em}
+        \item Kinematikai fa létrehozására valamint testek egymásba ágyazására alkalmas elem. Segítségével szülő-gyermek kapcsolat alakítható ki a wroldbody-ban található testek, vagyis body-k között.
+        \item Különböző argumentumai megadásával adhatjuk meg többek között a worldbody nevét, pozícióját vagy orientációját a szimulációs térben.
+        \item Számos argumentummal rendelkező elem, melyeknek további argumentumai vannak:
+        \begin{itemize}
+        \item body:
+        \begin{description}
+        \setlength{\itemindent}{0em}
+        \item Megegyezik a worldbody-val, de többször is használható, újabb testek definiálásának céljából.
+	    \end{description}
+	    \item inertial:
+        \begin{description}
+        \setlength{\itemindent}{0em}
+        \item Ezzel az elemmel a test tehetetlenségi tulajdonságai illetve a tömege határozható meg.
+        \item pos argumentumával az adott test tehetetlenségi keret középpontját adható meg a környezetben.
+        \item diaginertia tulajdonsággal a fő tehetetlenségi nyomaték értékek definiálhatóak.
+        \item fullinertia argumentummal a teljes tehetetlenségi tenzor adható meg, melyből a compiler kiszámítja a keret orientációját és a fő tehetetlenségi nyomaték értékeket.
+	    \end{description}
+	    \item joint:
+        \begin{description}
+	    \setlength{\itemindent}{0em}
+        \item Összeköttetések létrehozására szolgál két test között. Csak body típusú elemben határozhatóak meg, worldbody-ban nem. 
+        \item Létezik free (szabad), ball (gömb), slide (sín), hinge (könyök) típusú joint, amely a type argumentumban kerül meghatározásra. Nem minden argumentum rendelhető hozzá minden típusú jointhoz.
+        \item axis argumentum a hinge és a slide típusú joint elemnél értelmezhető. Az axis határozza meg a hinge joint forgástengely és a slide joint eltolódási irányát.
+        \item axis argumentum a hinge és a slide típusú joint elemnél értelmezhető. Az axis határozza meg a hinge joint forgástengely és a slide joint eltolódási irányát.
+	    \item range határozza meg az adott joint határértékeit. free típusú joint-nál nem használható.
+	    \item damping értékével szabályozható egy adott kapcsolódás csillapítása.
+	    \end{description}
+	    \item geom:
+        \begin{description}
+        \item Egy geometriai formát határoz meg, amely egy adott testhez van rögzítve. Egy testhez egyszerre több úgynevezett geom is rögzíthető.
+        \item Nem nélkülözhetetlen a geom jelenléte, de használata nélkül nem jönnek létre a testek közötti kontakt erők.
+	    \end{description}
+	    \end{itemize}
+	    \end{description}
+        
+        \item actuator
+        \begin{description}
+        \setlength{\itemindent}{0em}
+        \item Ez elem definiálja a beavatkozó szerveket. A motor argumentum egy közvetlen hajtású aktuátort definiál. 
+	    \end{description}
+	\end{itemize}
+	
+	Az imént felsorolt elemek csak egy részét fedik le az elérhető, teljes MuJoCo fizikai motorban megtalálható eszköztárnak. A MuJoCo dokumentációs felülete még részletesebb áttekintést nyújt a felhasználható elemeket illetően \cite{misc25}.
+	\pagebreak
+	\subsubsection{MuJoCo leíró fájl lehetséges elemeinek használata a GTPR környezetben}
+	A korábban ismertetett XML leíró elemek bemutató egy működő modellként, GTPR környezetben:
+	\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1,
+bgcolor=white,
+fontsize=\footnotesize,
+linenos
+]
+{xml}
+<mujoco model="GTPR">
+    <compiler angle="radian"/>
+	<option gravity="0 9.81 0"/>
+    <asset>
+        <mesh name="base_link" file="base_link.STL"/>
+        <mesh name="A1" file="A1.STL"/>
+    </asset>
+    <worldbody>
+	    <body name="base_link" pos="-2.3525E-17 -0.005 2.3559E-17" >
+        <geom type="mesh" rgba="0.7451 0.7451 0.7451 1" mesh="base_link"/>
+          <body name="A1" pos="0 0.2 -0.15" quat="0.707105 0.707108 0 0">
+          <inertial pos="5.3777e-05 4.4185e-09 0.1" mass="0.015311" 
+            diaginertia="4.8682e-05 4.8682e-05 1.9135e-07"/>
+          <joint name="A1" pos="0 0 0.2" axis="-40 0 0" type="hinge" 
+            range="-2.2854 1.714602" damping="0.01"/>
+          <geom type="mesh" rgba="0.7451 0.7451 0.7451 1" mesh="A1"/>
+          </body>
+        </body>
+    </worldbody>
+	<actuator>
+        <motor name="A1" joint="A1"/>
+    </actuator>
+</mujoco>
+\end{minted}
+	
+	A XML fájlban látható, hogy az asset elemben megadott két STL típusú mesh elem kerül definiálásra a worldbody törzsében, amelyek szülő-gyerek relációban kerülnek kiértékelésre a compiler által.
+	
+	\begin{figure}[h!]
+		    \centering
+		    \includegraphics[width=0.6\linewidth]{img/min_gtpr.png}
+		    \caption[Két elem kapcsolata GTPR környezetben]{Két elem kapcsolata GTPR környezetben}
+		    \label{fig:ml_1}
+	\end{figure}
+	
+	\pagebreak
+	\subsection{Fusion 360}
+	
+A Fusion 360 egy felhőalapú 3D modellező-, CAD-, CAM- és PCB-szoftverplatform terméktervezéshez és -gyártáshoz. Fő felhasználása a terméktervezés és kivitelezés, amely megfelel az esztétikai, alaki, illeszkedési és funkcionális szempontoknak egyaránt \cite{misc26}. Ez a szoftver egyszerűen használható eszköt, amely többek között egy mesterségesen létrehozott szimulációs környezetben használatos testek tervezésére és létrehozására alkalmas. A szoftver nem kereskedelmi célú használatra nem ingyenes, de van lehetőség ingyenes oktatási hozzáférés igénylésére.
+A Fusion 360 egy felhő alapú szoftver, amely lehetővé teszi, hogy egy helyi operációs rendszeren futtatott Fusion 360 Design klienssel létrehozott modell-t elérhető és letölthető legyen különböző formátumokban. Az egyik ilyen formátum a f3d kiterjesztésű, Fusion 360 Archive típusú állománya. 
+A Szűcs László által létrehozott GTPR modell is letölthető a Fusion 360 felhő állományából. 
+
+
+	\subsubsection{Fájlok konvertálása}
+	
+	Az f3d kiterjesztésű Fusion 360 Archive fájlokat további módosításoknak kell alávetni, ugyanis a MuJoCo fizikai motorral való szimulációhoz szükségünk van egy URDF kiterjesztésű XML fájlra. Erre szolgáltal megoldást a Github-on elérhető, nyílt forráskódú "A Fusion 360 Script to export URDF" elnevezésű Python nyelven írt szkript \cite{misc27}. 
+	A program a következő kiterjesztésű fájlok exportálására alkalmas:
+	
+	\begin{itemize}
+	\setlength{\itemindent}{3em}
+	    \item URDF vagy STL kiterjesztésű fájlt hoz létre az f3d típusú fájlból.
+        \item LAUNCH és YAML kiterjesztésű fájlokat hoz létre Gazebo szimulációhoz.
+	\end{itemize}
+	
+	A szkript futtatása után a következő kiterjesztésű állományok jönnek létre:
+	\begin{itemize}
+	\setlength{\itemindent}{3em}
+	    \item GAZEBO
+        \item TRANS
+        \item XACRO
+	\end{itemize}
+
+    Az exportált XACRO kiterjesztésű fájl megfeleltethető a megfeleltethető URDF fájlnak, de szükséges további formai átalakítás a megfelelő használathoz.
+    
+
+\pagebreak
+	\subsection{Szimuláció}
+	\subsubsection{Fordítási folyamat}
+	
+	Egyedi készítésű modell MuJoCo környezetben történő szimulációjához szükséges a legenerált URDF fájlt lefordítani XML kiterjesztésű MJFC típusú fájlá. Ehhez a MuJoCo beépített fordítót biztosít amely a .mujoco/mujoco200/bin/ könyvtárban érhető el egy "compile" nevű x-executable típusú futtatható állományként. A compiler egy bemeneti URDF fájl és egy kimeneti XML fájl elérési útját várja argumentumaként. 
+	
+	A generálás sikerességéhez szükséges a bemeneti állományt kibővíteni a következő argumentumokkal:
+	
+		\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1,
+bgcolor=white,
+fontsize=\footnotesize,
+linenos
+]
+{xml}
+<mujoco>
+<compiler meshdir="/home/rot1bp/Desktop/GTPR/urdf"
+    balanceinertia="true"
+strippath="false"/>
+</mujoco>
+\end{minted}
+	
+	A kimeneti állomány szintaktikailag megfelel a MuJoCo környezet által elvárt formátumnak, de szemantikailag nem.
+
+	\subsubsection{Hibák a generálásnál}
+	
+	A már meglévő modellből létrehozandó MuJoCo-ban szimulálható leíró fájl generálás lépéseiben több ponton történhet hiba. 
+	A Fusion 360 Design által exportált f3d fájlban előfordulhat az összeköttetések definiálása során téves öröklődési reláció. Valószínűleg ez felhasználói hibából fakad, ami nem a GTPR modell, hanem egy másik próba tesst létrehozásánál fordult elő.
+	Az ilyen ellentmondást kismennyiségű összeköttetések esetén nem komplex feladat feloldani a generált fájlok szerkesztésével.
+	
+	A "A Fusion 360 Script to export URDF" nevű script valóban képes létrehozni a megfelelő kiterjesztésű állományokat, azonban ebben a formában autonóm környezetben nem alkalmazható.
+	
+	A szkript az eredeti forrásfájllal nem egy az egyben megfeleltethető kimeneti fájlt hoz létre. A bemeneti URDF fájlokban szereplő test - itt link - elemek számai és nevei nem egyeznek a program által generált kimeneti fájlban szereplő elemek azonos argumetumaival.
+	Megoldásként a kimenetben képződött duplikátum részt el kell távolítani.
+	
+	Amennyiben megfelelő az URDF fájlban a testeket összekötő kapcsolatok öröklődése megfelelő és fordítás közbeni hiba sem jelentkezik, a generálás megtörténik, de a kimeneti fájlban nem jön létre az actuator szekció. Ezt a részt szintén kézi módosítással kell létrehozni, hogy teljes értékű MuJoCo fizikai motorral szimulált modell keletkezzen.
+	
+	\subsubsection{Szimuláció futtatása}
+	A MuJoCo lehetőséget biztosít a szintaktikailag és szemantikailag helyes MJFC típusú XML kiterjesztésű fájlok szimulációjára. Ehhez a MuJoCo beépített szimulátort biztosít amely a .mujoco/mujoco200/bin/ könyvtárban érhető el egy "simulate" nevű x-executable típusú futtatható állományként.
+	
+	A futtatáshoz a korábban generált MJFC típusú XML leíró elérési útját szükséges megadni a simulate program argumentumaként.
+	
+	A simulate futtatható állomány egy teljesértékű interaktív szimulátor program, amely egy OpenGL ablakot nyit meg platformfüggetlen GLFW könyvtár használatával, amiben megjeleníti az aktuális szimulációs állapotot. Számos hasznos, valós idejű adat kinyerésére alkalmas ez a program mint a környezetben uralkodó erők, a számítógép processzor magjai által leadott teljesítmény vagy a szimulációs kép frissítése. 
+	
+	\subsubsection{Kép a szimulációról}
+	
+	\begin{figure}[h!]
+		    \centering
+		    \includegraphics[width=1\linewidth]{img/gtpr_1.png}
+		    \caption[Két elem kapcsolata GTPR környezetben]{Két elem kapcsolata GTPR környezetben}
+		    \label{fig:gtpr_sim_2}
+	\end{figure}
+	
+	A szimulációs program jobb oldalán láthatóak az aktuátorok aktuális értékei valamint a passzív és aktív összekötő elemekre ható kényszer erők.
+	
+	A szimuláció futása közben az aktuátorok értékei változtathatóak, a testben ébredő erők pedig futás közben kerülnek kiszámításra. Amennyiben a felhasználó bármely aktuátort olyan állapotba állítja, amely hatására valamely fizikai mennyiség a környezetben definiált határértéket eléri, a program a konzol felületen megadja a megfelelő figyelmeztető vagy hibajelzést. Nem ideálisan szerkesztett leíró fájl esetén előfordulhat kritikus hiba, melynek hatására a szimuláció befejeződik.
+	\bigskip
+	\begin{figure}[h!]
+		    \centering
+		    \includegraphics[width=1\linewidth]{img/gtpr_3.png}
+		    \caption[Alaphelyzetű test a GTPR szimulációs környezetben]{Alaphelyzetű test a GTPR szimulációs környezetben}
+		    \label{fig:gtpr_sim_2}
+	\end{figure}
+	
+	A \ref{fig:gtpr_sim_2}-ös ábrán látható alaphelyzetben lévő GTPR modell a szimulációs környezetben valamint a vezérelhető aktuátorok, illetve az összes kapcsolatra ható erők értékei.
+	
+	\begin{figure}[h!]
+		    \centering
+		    \includegraphics[width=1\linewidth]{img/gtpr_4.png}
+		    \caption[Két elem kapcsolata GTPR környezetben]{Két elem kapcsolata GTPR környezetben}
+		    \label{fig:gtpr_sim_3}
+	\end{figure}
+	\pagebreak
+	A \ref{fig:gtpr_sim_3}-as ábrán látható a módosított aktuátor állapotban lévő GTPR modell a szimulációs környezetben valamint a vezérelhető aktuátorok, illetve az összes kapcsolatra ható erők értékei. Látható, hogy a kezdeti állapothoz képest eltérő értékek kerültek kiszámításra a futtatás során. 
+	
+	\subsubsection{Megoldandó problémák}
+	A szimuláció aktuális állapota nem tekinthető véglegesnek. A GTPR modell felkar és alkar találkozásainál lévő csuklók további beállításokat igényelnek a megfelelő, valódi fizikai mozgás szimulációjához.
+	
+	A működés helyességének és pontosságának ellenőrzéséhez szükséges a GTPR modell további fizikai tulajdonságainak kinyerési a szimulációból. Ilyen például a csuklókra ható erők, az aktuátorok és az egyéb csuklók szögelfordulás értékei valamint a munkaháromszög koordinátája a térben. 
+
+	
+	\pagebreak
+	
+	\subsection{Pythonban írt mesterséges intelligencia környezet megvalósítása}
+	
+	A Python környezetben elérhető OpenAI Gym modul a MuJoCo fizikai motorral kiegészülve lehetőséget biztosít többek között különböző ML technikák fejlesztésére is. A MuJoCo 2021-től kezdve ingyenesen elérhető lincenszt biztosít, melynek érvényessége 2031 október 18-a. MuJoCo és OpenAI Gym letöltősének és telepítésének lépései a következők \cite{misc28}:
+
+	
+	
+	\begin{enumerate}
+	\setlength{\itemindent}{2em}
+	    \item mujoco200 - MuJoCo C/C++ dinamikus könyvtár - letöltése.
+        \item Aktivációs kulcs letöltése és elhelyezése a megfelelő könyvtárban.
+        \item MuJoCo modul telepítése a Python környezeten belül - pip install mujoco.
+        \item OpenAI Gym modul telepítése a Python környezeten belül - pip install gym[all].
+		\end{enumerate}
+	
+	Egyedi környezet használatához szükséges a következú felépítésű mappastruktúra létrehozása \cite{misc29}:
+
+\begin{center}
+	\begin{BVerbatim}
+FolderA/
+     README.md
+     run.py
+     setup.py
+     FolderB/
+           __init__.py
+           envs/
+                __init__.py
+                MyRobotEnv.py
+	\end{BVerbatim}
+	\end{center}
+	
+	A setup.py forráskód hivatott létrehozni a saját környezetünkön belül a saját modulunkat, amely további általunk használt modult használ:
+	
+	
+	\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1,
+bgcolor=white,
+fontsize=\footnotesize,
+linenos
+]
+{python}
+from setuptools import setup
+setup(name='FolderB',
+      version='0.1',
+      install_requires=['gym','numpy'])
+\end{minted}
+
+A FolderB könyvtárban található \texttt{\detokenize{__init__.py}} fájl a regisztrálandó modell nevét és a belépési pontját definiálja:
+	
+	\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1,
+bgcolor=white,
+fontsize=\footnotesize,
+linenos
+]
+{python}
+from gym.envs.registration import register
+register(id='GTPR-v0',
+         entry_point='FolderB.envs:EnvClassName',)
+\end{minted}
+	
+	A belépési pont a FolderB/envs könyvtárban található MyRobotEnv.py forráskódban definiált osztály, amelyben többek között inicializálásra kerül az egyedileg generált MJFC típusú XML leíró fájl.
+	
+	\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1,
+bgcolor=white,
+fontsize=\footnotesize,
+linenos
+]
+{python}
+import numpy as np
+import os
+from gym import utils, error, spaces
+from gym.envs.mujoco import mujoco_env
+from mujoco_py import MjViewer, functions
+
+class EnvClassName(mujoco_env.MujocoEnv, utils.EzPickle):
+    def __init__(self):
+        utils.EzPickle.__init__(self)
+        FILE_PATH = '' # Absolute path to your .xml MuJoCo scene file 
+                        # OR.
+        # FILE_PATH = os.path.join(os.path.dirname(__file__), "GTPR.xml")
+        frame_skip = 5
+        mujoco_env.MujocoEnv.__init__(self, FILE_PATH, frame_skip)
+
+    def step(self, a):
+        # Carry out one step 
+        # Don't forget to do self.do_simulation(a, self.frame_skip)
+
+    def viewer_setup(self):
+        # Position the camera
+
+    def reset_model(self):
+        # Reset model to original state. 
+        # This is called in the overall env.reset method
+        # do not call this method directly. 
+
+    def _get_obs(self):
+      # Observation of environment fed to agent. This should never be called
+      # directly but should be returned through reset_model and step
+\end{minted}
+
+A GTPR ML tanítása a run.py program futtatásával kezdődik: 
+
+
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1,
+bgcolor=white,
+fontsize=\footnotesize,
+linenos
+]
+{python}
+import gym
+import FolderB
+
+env = gym.make('GTPR-v0')
+while(True):
+    observation = env.reset()
+    for t in range(1000):
+        env.render()
+        action = env.action_space.sample()
+        observation, reward, done, info = env.step(action)
+        if done:
+            print("Episode finished after {} timesteps".format(t+1))
+            break
+env.close()
+\end{minted}
+
+
+
+	\bigskip
+	
+	
+	\pagebreak	
+	\section{Mérések}
+	\subsection{Mérési eredmények}
+	\subsection{Mérések kiértékelése}
+    \section{Összegzés}
+    \pagebreak
+	\bibliographystyle{ieeetr}
+	\bibliography{bib/hivatkoz}
+
+
+	
+    
+
+\end{document}
+
+
