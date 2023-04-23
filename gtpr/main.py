@@ -4,20 +4,15 @@ import FolderB
 import numpy as np
 import os
 
-os.environ["LD_LIBRARY_PATH"]="$LD_LIBRARY_PATH:/home/rot1bp/.mujoco/mujoco200/bin"
-print(os.environ["LD_LIBRARY_PATH"])
-input()
-
 env = gym.make('GTPR-v0')
 # env.qposvel_zeroing()
 # env.ball_init()
 asd = np.sin(range(10000))
-# action = [asd[t],asd[t],asd[t]]
 obs = env.reset()
 while(True):
     for t in range(1000):
-        action = env.action_space.sample()
-        #action = [asd[t],asd[t],asd[t]]
+        #action = env.action_space.sample()
+        action = [asd[t],asd[t],asd[t]]
         obs, reward, done, info = env.step(action)
         env.render()
         if done:
