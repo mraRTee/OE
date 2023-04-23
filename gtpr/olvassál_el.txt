@@ -3,8 +3,9 @@ GTPR saját környezet futtatásának lépései:
 1. LD_LIBRARY_PATH környezeti változó megadása:
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/rot1bp/.mujoco/mujoco200/bin
 2. Szimuláció futtatása:
-run.sh
-TODO: futtatható állomány készítése: -/run.sh --kell hozzá új környezetet telepíteni
+run.sh train
+run.sh simu
+
 
 GTPR modell futtatása külön:
 
