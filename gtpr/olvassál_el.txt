@@ -1,0 +1,4 @@
+Usage of running the training and the simulation of GTPR model:
+
+./run.sh train
+./run.sh simu
