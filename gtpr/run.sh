@@ -1,16 +1,20 @@
 #!/bin/sh
-# argumentumok megadása
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/rot1bp/.mujoco/mujoco200/bin
-echo "First arg: $1"
 
-if [ $1 = 'train' ]
+# Need to add LD_LIBRARY_PATH environment variable
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/rot1bp/.mujoco/mujoco200/bin
+# Path of the compiled xml file of the GTPR model
+xml_path=/home/rot1bp/Desktop/work_custom_mujoco_project/OE/gtpr/FolderB/envs/compiled.xml
+
+if [ "$1" = train ];
 then
-   echo "Training of a model has been started!"
+   echo "Training of a model has begun!"
    python3 main.py
-elif [ $1 = 'simu' ]
+elif [ "$1" = simu ];
 then
+   echo "Simulation of $xml_path file has begun"
    cd /home/rot1bp/.mujoco/mujoco200/bin/
-   /home/rot1bp/.mujoco/mujoco200/bin/simulate /home/rot1bp/Desktop/work_custom_mujoco_project/OE/gtpr/FolderB/envs/compiled.xml
+   # Using the simulation application of mujoco200
+   /home/rot1bp/.mujoco/mujoco200/bin/simulate $xml_path
 else
    echo "None of the condition met"
 fi
