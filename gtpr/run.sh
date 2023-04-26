@@ -3,7 +3,8 @@
 # Need to add LD_LIBRARY_PATH environment variable
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/rot1bp/.mujoco/mujoco200/bin
 # Path of the compiled xml file of the GTPR model
-xml_path=/home/rot1bp/Desktop/work_custom_mujoco_project/OE/gtpr/FolderB/envs/compiled.xml
+directory=$(dirname -- $(readlink -fn -- "$0"))
+xml_path=$directory/FolderB/envs/compiled.xml
 
 if [ "$1" = train ];
 then

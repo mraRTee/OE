@@ -15,12 +15,10 @@ def perform_sinus(env, obs):
     frequency = 20.0
     time = np.arange(0, 10000, 0.001)
     sinus = amplitude * np.sin(2 * np.pi * frequency * time)
-
     while(True):
         for t in range(10000):
             action = [sinus[t],sinus[t],sinus[t]]
-            
-            obs = env.step_sinus(action)
+            obs = env.step(action)
             env.render()
 
 def train(env, obs):
@@ -28,8 +26,7 @@ def train(env, obs):
         for t in range(10000):
             action = env.action_space.sample()
             #action = [sinus[t],sinus[t],sinus[t]]
-            
-            obs, reward, done, info = env.step(action)
+            obs, reward, done, info = env.step_train(action)
             env.render()
             if done:
                 print("Episode finished after {} timesteps".format(t+1))
