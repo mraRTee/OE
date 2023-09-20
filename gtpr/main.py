@@ -5,7 +5,7 @@ import numpy as np
 import os
 import math
 import sys
-
+import random
 
 def perform_sinus(env, obs):
     '''
@@ -22,14 +22,24 @@ def perform_sinus(env, obs):
             env.render()
 
 def train(env, obs):
+    
+    #q_table = env.q_table_zeroing(state_space = 100000, action_state = 4)
+    q_table = np.random.uniform(low=-10,high=10,size=([10000]+[4]))
+
     while(True):
         for t in range(10000):
-            action = env.action_space.sample()
-            #action = [sinus[t],sinus[t],sinus[t]]
-            obs, reward, done, info = env.step_train(action)
+            #action = np.random.uniform(low=-10, high=10, size=3)
+            action = q_table[random.randint(0, 9999)][:-1]
+            print(action)
+            #print(action)
+            obs, reward, done, _ = env.step_train(action)
+            print("obs: ",obs)
+            # print("reward: ",reward)
             env.render()
             if done:
                 print("Episode finished after {} timesteps".format(t+1))
+                print(reward)
+                input()
                 obs = env.reset()
                 break
 

@@ -7,14 +7,27 @@ import mujoco_py as mjp
 from dm_control import suite,mujoco
 
 class EnvClassName(mujoco_env.MujocoEnv, utils.EzPickle):
+    staticus_szar = False
+    decking_counter = 0
+    biggest = []
+    biggest_numbers_of_events = []
+    elapsed_time = 0
+    reward = 0
     def __init__(self):
         utils.EzPickle.__init__(self)
         FILE_PATH = os.path.join(os.path.dirname(__file__), "compiled.xml")
         frame_skip = 1
         mujoco_env.MujocoEnv.__init__(self, FILE_PATH, frame_skip)
         
+        
     def reset(self):
         self.sim.reset()
+        print("COUNTER: ", self.decking_counter)
+        self.decking_counter = 0
+        self.biggest = 0
+        self.biggest_numbers_of_events = []
+        self.elapsed_time = time.time()
+        self.reward = 0
         return self.get_observation()
         
     def get_observation(self):
@@ -54,29 +67,93 @@ class EnvClassName(mujoco_env.MujocoEnv, utils.EzPickle):
 
     def step(self, action):
 
-        # This line is responsible to control with SINUS
+        global prev_dist
         self.sim.data.ctrl[:] = action
-        #self.sim.step()
+        self.staticus_szar = True
+        prev_dist = 0
+        self.sim.step()
+        self.elapsed_time = time.time()
         return self.get_observation(), 0, False, {}
     
     def reward_function(self, platform_height, ball_height):
-        # Az állapot tartalmazza a labda magasságát és sebességét stb.
+
         distance_to_target = abs(platform_height - ball_height)
         diff = self.diff('ball', 'platform', "x", "x")
+        global prev_dist
+        global biggest
+        le_time = time.time()-self.elapsed_time
 
-        if diff:
-            reward = distance_to_target / platform_height
+        if (prev_dist < ball_height) and (prev_dist != 0 )and (self.staticus_szar == False):
+            self.staticus_szar = True
+            if self.biggest != 1.0 and self.biggest > 0:
+                self.decking_counter += 1
+            self.biggest_numbers_of_events.append(self.biggest)
+            self.biggest = 0
+
+        if prev_dist > ball_height:
+            if len(self.biggest_numbers_of_events) == 0:
+                self.biggest_numbers_of_events.append(0)
+            if self.biggest != max(ball_height, prev_dist, self.biggest):
+                self.biggest = max(ball_height, prev_dist, self.biggest)
+            try:
+                self.biggest_numbers_of_events.remove(0)
+            except:
+                pass
+            try:
+                self.biggest_numbers_of_events.remove(1.0)
+            except:
+                pass
+
+            self.staticus_szar = False
+
+        if diff and self.decking_counter > 0:
+            self.reward = distance_to_target / platform_height
+            self.reward += 0.01 * le_time
+            self.reward += 0.1 * (ball_height - prev_dist)
         else:
-            reward = 0.01
-        return reward
+            self.reward += 0.01
+        if self.reward>0.01:
+            pass
+
+        prev_dist = ball_height
+        return self.reward, prev_dist
 
     def step_train(self, action):
-        # This line is responsible to control with SINUS
-        
         done = False
+
         if self.diff('platform', 'ball', "x", "x"):
             done = True
+        
+        self.sim.data.ctrl[:] = action
         self.sim.step()
-        print(self.reward_function(self.get_obs_my('platform', 2), self.get_obs_my('ball', 2)))
-        return self.get_observation(), 0, done, {}
+        reward, prev_dist = self.reward_function(self.get_obs_my('platform', 2), self.get_obs_my('ball', 2))
+
+        return self.get_observation(), reward, done, {}
     
+    def q_table_update(self, state_space, action_state):
+
+        # HINT:
+        #  max_future_q = np.max(q_table[new_discrete_state])
+
+        # current_q = q_table[discrete_state + (action,)]
+
+        # new_q = (1 - LEARNING_RATE) * current_q + LEARNING_RATE * (reward + DISCOUNT * max_future_q)
+
+        # q_table[discrete_state + (action,)] = new_q
+        # retrun q_table
+        pass
+
+    def q_table_zeroing(self, state_space, action_state):
+        # state space is amount of elements, action space is the size of elements. 
+        # state_space = 10
+        # action_state = 2
+        q_table = np.zeros((state_space, action_state))
+        print(q_table)
+
+
+        # q_table = np.zeros((10000,3))
+        # for i in range(10000):
+        #     for j in range(3):
+        #         q_table[i][j] = np.random.uniform(low=-5, high=0)
+
+  
