@@ -7,12 +7,19 @@ import mujoco_py as mjp
 from dm_control import suite,mujoco
 
 class EnvClassName(mujoco_env.MujocoEnv, utils.EzPickle):
-    staticus_szar = False
+    falling_flag = False
     decking_counter = 0
     biggest = []
     biggest_numbers_of_events = []
     elapsed_time = 0
     reward = 0
+    previous_dist = 0
+    all_ball_height_list = []
+    highest_balls_list = []
+    counter = 0
+    counter_list = []
+    distance = []
+    reward_list = []
     def __init__(self):
         utils.EzPickle.__init__(self)
         FILE_PATH = os.path.join(os.path.dirname(__file__), "compiled.xml")
@@ -67,68 +74,61 @@ class EnvClassName(mujoco_env.MujocoEnv, utils.EzPickle):
 
     def step(self, action):
 
-        global prev_dist
         self.sim.data.ctrl[:] = action
-        self.staticus_szar = True
-        prev_dist = 0
+        self.falling_flag = False
+        self.previous_dist = 0
         self.sim.step()
         self.elapsed_time = time.time()
         return self.get_observation(), 0, False, {}
     
     def reward_function(self, platform_height, ball_height):
-
         distance_to_target = abs(platform_height - ball_height)
         diff = self.diff('ball', 'platform', "x", "x")
-        global prev_dist
-        global biggest
-        le_time = time.time()-self.elapsed_time
+        elapsed_time_in_reward = time.time()-self.elapsed_time
+        self.all_ball_height_list.append(ball_height)
 
-        if (prev_dist < ball_height) and (prev_dist != 0 )and (self.staticus_szar == False):
-            self.staticus_szar = True
-            if self.biggest != 1.0 and self.biggest > 0:
-                self.decking_counter += 1
-            self.biggest_numbers_of_events.append(self.biggest)
-            self.biggest = 0
+        # Ball going upwards 
+        if (self.previous_dist < ball_height) and (self.previous_dist != 0 ) and self.falling_flag == True:
+            print("EMELKEDIK")
+            self.falling_flag = False
+            # Decking counting up
+            self.decking_counter += 1
 
-        if prev_dist > ball_height:
-            if len(self.biggest_numbers_of_events) == 0:
-                self.biggest_numbers_of_events.append(0)
-            if self.biggest != max(ball_height, prev_dist, self.biggest):
-                self.biggest = max(ball_height, prev_dist, self.biggest)
-            try:
-                self.biggest_numbers_of_events.remove(0)
-            except:
-                pass
-            try:
-                self.biggest_numbers_of_events.remove(1.0)
-            except:
-                pass
+        # Slow down
+        # time.sleep(0.04)
 
-            self.staticus_szar = False
+        # Ball going down
+        if self.previous_dist > ball_height and self.falling_flag == False:
+            print("ESIK")
+            self.highest_balls_list.append(ball_height)
+            self.counter_list.append(self.counter)
+            self.falling_flag = True
+            # Counting height
+            self.distance.append(abs(platform_height - ball_height))
 
-        if diff and self.decking_counter > 0:
-            self.reward = distance_to_target / platform_height
-            self.reward += 0.01 * le_time
-            self.reward += 0.1 * (ball_height - prev_dist)
-        else:
-            self.reward += 0.01
-        if self.reward>0.01:
-            pass
+        if self.decking_counter:
+            self.reward += self.highest_balls_list[-1]** 0.02
+            self.reward += self.decking_counter ** 0.2
+            self.reward += elapsed_time_in_reward ** 0.2
 
-        prev_dist = ball_height
-        return self.reward, prev_dist
+        # Getting the latest height of the ball
+        self.counter += 1
+        self.previous_dist = ball_height
+        return self.reward, self.previous_dist
 
     def step_train(self, action):
         done = False
 
         if self.diff('platform', 'ball', "x", "x"):
             done = True
-        
+            print("utolsó magas labda: ", self.highest_balls_list[-1])
+            print("dekázás: ", self.decking_counter)
+
         self.sim.data.ctrl[:] = action
         self.sim.step()
-        reward, prev_dist = self.reward_function(self.get_obs_my('platform', 2), self.get_obs_my('ball', 2))
+        reward, self.previous_dist = self.reward_function(self.get_obs_my('platform', 2), self.get_obs_my('ball', 2))
 
-        return self.get_observation(), reward, done, {}
+        return self.get_observation(), reward, done, {}, self.highest_balls_list, self.all_ball_height_list, self.counter_list
     
     def q_table_update(self, state_space, action_state):
 

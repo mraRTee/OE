@@ -29,16 +29,21 @@ def train(env, obs):
     while(True):
         for t in range(10000):
             #action = np.random.uniform(low=-10, high=10, size=3)
+
+            # Generate random numbers to the actuator initial position
+            # Need to update it with the previous qtable sample?
             action = q_table[random.randint(0, 9999)][:-1]
-            print(action)
-            #print(action)
-            obs, reward, done, _ = env.step_train(action)
-            print("obs: ",obs)
+
+            obs, reward, done, _, highest_ball_list, all_ball_list, counter_list= env.step_train(action)
+            # print("obs: ",obs)
             # print("reward: ",reward)
             env.render()
             if done:
                 print("Episode finished after {} timesteps".format(t+1))
                 print(reward)
+                # print(highest_ball_list)
+                # print(all_ball_list)
+                # print(counter_list)
                 input()
                 obs = env.reset()
                 break
