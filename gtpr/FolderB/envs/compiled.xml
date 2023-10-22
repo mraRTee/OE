@@ -117,7 +117,7 @@
 			<body name="A1" pos="0 0.2 -0.15" quat="0.707105 0.707108 0 0">
 				<inertial pos="5.3777e-05 4.4185e-09 0.1" mass="0.015311" diaginertia="4.8682e-05 4.8682e-05 1.9135e-07" />
 				<geom type="mesh" rgba="0.7451 0.7451 0.7451 1" mesh="A1" />
-				<joint name="A1" pos="0 0 0.2" axis="-40 0 0" type="hinge" limited="true" range="-100 100" damping="1.01" stiffness="0.1" />
+				<joint name="A1" pos="0 0 0.2" axis="-40 0 0" type="hinge" limited="true" range="-1 1"  damping="1.01" stiffness="0.1" />
 				<body name="U1" pos="-0.05 0 0" quat="0.435887 0.556777 0.435891 0.556777">
 					<inertial pos="-0.000110499 -1.29114e-08 0.05" mass="0.00745719" diaginertia="5.6949e-06 5.69478e-06 9.31377e-08" />
 					<geom type="mesh" rgba="0.745098 0.745098 0.745098 1" mesh="U1" />
@@ -147,7 +147,7 @@
 			<body name="A2" pos="-0.1299 0.2 0.075" quat="0.353553 0.353556 0.612372 -0.612372">
 				<inertial pos="5.3777e-05 4.4185e-09 0.1" mass="0.015311" diaginertia="4.8682e-05 4.8682e-05 1.9135e-07" />
 				<geom type="mesh" rgba="0.7451 0.7451 0.7451 1" mesh="A2" />
-				<joint name="A2" pos="0 0 0.2" axis="-40 0 0" type="hinge" limited="true" range="-100 100" damping="1.01" stiffness="0.1" />
+				<joint name="A2" pos="0 0 0.2" axis="-40 0 0" type="hinge" limited="true" range="-1 1"   damping="1.01" stiffness="0.1" />
 				<body name="U2" pos="-0.05 0 0" quat="0.435887 0.556777 0.435891 0.556777">
 					<inertial pos="-0.000110499 -1.29114e-08 0.05" mass="0.00745719" diaginertia="5.6949e-06 5.69478e-06 9.31377e-08" />
 					<geom type="mesh" rgba="0.745098 0.745098 0.745098 1" mesh="U2" />
@@ -178,7 +178,7 @@
 			<body name="A3" pos="0.1299 0.2 0.075" quat="0.353553 0.353556 -0.612372 0.612372">
 				<inertial pos="5.3777e-05 4.4185e-09 0.1" mass="0.015311" diaginertia="4.8682e-05 4.8682e-05 1.9135e-07" />
 				<geom type="mesh" rgba="0.7451 0.7451 0.7451 1" mesh="A3" />
-				<joint name="A3" pos="0 0 0.2" axis="-40 0 0" type="hinge" limited="true" range="-100 100" damping="1.01" stiffness="0.1" />
+				<joint name="A3" pos="0 0 0.2" axis="-40 0 0" type="hinge" limited="true" range="-1 1"   damping="1.01" stiffness="0.1" />
 				<body name="U3" pos="-0.05 0 0" quat="0.435887 0.556777 0.435891 0.556777">
 					<inertial pos="-0.000110499 -1.29114e-08 0.05" mass="0.00745719" diaginertia="5.6949e-06 5.69478e-06 9.31377e-08" />
 					<geom type="mesh" rgba="0.745098 0.745098 0.745098 1" mesh="U3" />
@@ -217,8 +217,14 @@
 		</body>
 	</worldbody>
 	<actuator>
-		<position name="A1" joint="A1" />
-		<position name="A2" joint="A2" />
-		<position name="A3" joint="A3" />
+		<motor joint="A1" gear="10" ctrlrange="-0.9 0.9"/>
+		<motor joint="A2" gear="10" ctrlrange="-0.9 0.9"/>
+		<motor joint="A3" gear="10" ctrlrange="-0.9 0.9"/>
+
+		<!-- gear a fordulatszámot határozza meg -->
+		<!-- <position name="A1" joint="A1" ctrllimited="true" ctrlrange="0 1.0" />
+		<position name="A2" joint="A2" ctrllimited="true" ctrlrange="0 1.0" />
+		<position name="A3" joint="A3" ctrllimited="true" ctrlrange="0 1.0" /> -->
 	</actuator>
+
 </mujoco>
