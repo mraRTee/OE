@@ -8,35 +8,54 @@ import DDPG.TD3.utils as utils
 import DDPG.TD3.TD3 as TD3
 import DDPG.TD3.OurDDPG as OurDDPG
 from DDPG.TD3 import DDPG as DDPG 
-
+import time
 import FolderB
 
 
 # Runs policy for X episodes and returns average reward
 # A fixed seed is used for the eval environment
-def eval_policy(policy, env_name, seed, eval_episodes=10):
-	eval_env = gym.make(env_name)
-	eval_env.seed(seed + 100)
+# def eval_policy(policy, env_name, seed, eval_episodes=10):
+# 	eval_env = gym.make(env_name)
+# 	eval_env.seed(seed + 100)
 
-	avg_reward = 0.
-	for _ in range(eval_episodes):
-		state, done = eval_env.reset(), False
-		while not done:
-			action = policy.select_action(np.array(state))
-			print("ACTION: ", action)
-			state, reward, done, _ = eval_env.step(action)
-			print("REWARD: ",reward)
-			avg_reward += reward
-			eval_env.render()
-			# print(avg_reward)
-		# eval_env.close()
-	avg_reward /= eval_episodes
-	print("---------------------------------------")
-	print(f"Evaluation over {eval_episodes} episodes: {avg_reward:.3f}")
-	print("---------------------------------------")
+# 	avg_reward = 0.
+# 	for _ in range(eval_episodes):
+# 		state, done = eval_env.reset(), False
+# 		while not done:
+# 			action = policy.select_action(np.array(state))
+# 			print("ACTION: ", action)
+# 			state, reward, done, _ = eval_env.step(action)
+# 			print("REWARD: ",reward)
+# 			avg_reward += reward
+# 			eval_env.render()
+# 			# print(avg_reward)
+# 		# eval_env.close()
+# 	avg_reward /= eval_episodes
+# 	print("---------------------------------------")
+# 	print(f"Evaluation over {eval_episodes} episodes: {avg_reward:.3f}")
+# 	print("---------------------------------------")
 
-	return avg_reward
+# 	return avg_reward
 
+def eval_policy(policy, eval_env, seed, eval_episodes = 3, test=False):
+    eval_env.seed(seed + 100)
+    avg_reward = 0
+    for i in range(eval_episodes):
+        state, done = eval_env.reset(), False
+        while not done:
+            action = policy.select_action(np.array(state))
+            state, reward, done, _ = eval_env.step(action)
+            avg_reward += reward
+            if test:
+                time.sleep(1.0/240.0)   #this is the default PyBullet Update Frequency.
+    avg_reward /= eval_episodes
+    print("---------------------------------------")
+    print(f"Evaluation over {eval_episodes} episodes: {avg_reward:.3f}")
+    print("---------------------------------------")
+    return avg_reward
+
+def is_non_zero_file(fpath):
+    return os.path.isfile(fpath) and os.path.getsize(fpath) > 0
 
 if __name__ == "__main__":
 	
@@ -108,8 +127,10 @@ if __name__ == "__main__":
 	replay_buffer = utils.ReplayBuffer(state_dim, action_dim)
 	
 	# Evaluate untrained policy
-	evaluations = [eval_policy(policy, args.env, args.seed)]
-
+	#evaluations = [eval_policy(policy, args.env, args.seed)]
+	
+	evaluations = [eval_policy(policy, env, args.seed)]
+	
 	state, done = env.reset(), False
 	episode_reward = 0
 	episode_timesteps = 0
@@ -137,7 +158,7 @@ if __name__ == "__main__":
 
 		state = next_state
 		episode_reward += reward
-		# env.render()
+		env.render()
 		# Train agent after collecting sufficient data
 		if t >= args.start_timesteps:
 			policy.train(replay_buffer, args.batch_size)
@@ -152,7 +173,7 @@ if __name__ == "__main__":
 			episode_num += 1 
 
 		# Evaluate episode
-		# if (t + 1) % args.eval_freq == 0:
-		# 	evaluations.append(eval_policy(policy, args.env, args.seed))
-		# 	np.save(f"./results/{file_name}", evaluations)
-		# 	if args.save_model: policy.save(f"./models/{file_name}")
+		if (t + 1) % args.eval_freq == 0:
+			evaluations.append(eval_policy(policy, env, 1))
+			np.save(f"./results/{file_name}", evaluations)
+			if args.save_model: policy.save(f"./models/{file_name}")

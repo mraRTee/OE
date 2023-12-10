@@ -8,7 +8,9 @@ from dm_control import suite,mujoco
 
 class EnvClassName(mujoco_env.MujocoEnv, utils.EzPickle):
     falling_flag = False
+    step_counter = 0
     decking_counter = 0
+    above_BONUS_ALTITUDE_DIFF = False
     biggest = []
     biggest_numbers_of_events = []
     elapsed_time = 0
@@ -32,6 +34,7 @@ class EnvClassName(mujoco_env.MujocoEnv, utils.EzPickle):
     def reset(self):
         # self.sim.reset()
         print("COUNTER: ", self.decking_counter)
+        self.above_BONUS_ALTITUDE_DIFF = False
         self.decking_counter = 0
         self.biggest = 0
         self.biggest_numbers_of_events = []
@@ -94,18 +97,51 @@ class EnvClassName(mujoco_env.MujocoEnv, utils.EzPickle):
         observations = self.get_observation()
         done = False
 
-        if self.diff('platform', 'ball', "x", "x"):
-            done = True
-
-        reward = self.reward_function(self.get_obs_my('platform', 2), self.get_obs_my('ball', 2), done)
+        observations, reward, done = self.reward_function(self.get_obs_my('platform', 2), self.get_obs_my('ball', 2), done)
         return observations, reward, done, {}
 
     
     def reward_function(self, platform_height, ball_height, done):
+        self.step_counter += 1
         distance_to_target = abs(platform_height - ball_height)
         diff = self.diff('ball', 'platform', "x", "x")
-        elapsed_time_in_reward = time.time()-self.elapsed_time
-        self.all_ball_height_list.append(ball_height)
+        if diff < .2:
+            reward = -25
+            done = True
+        else:
+            if distance_to_target >= .16:
+                done = False
+                if not self.above_BONUS_ALTITUDE_DIFF:
+                    reward = 50
+                    self.above_BONUS_ALTITUDE_DIFF = True
+                    self.step_counter = 0
+                else:
+                    reward = 0
+            else:   #ball is above the platform but lower than the relative height threshold
+                if self.above_BONUS_ALTITUDE_DIFF:
+                    self.above_BONUS_ALTITUDE_DIFF = False
+                reward = -0.1
+                done = False
+
+        # max step num is 800
+        if self.step_counter >= 800:
+            done = True
+
+        # info = {"eef position: ": self.observation[6:9], \
+        #         "ball position: ": self.observation[12:15]}
+
+
+        return self.get_observation(), reward, done
+
+    def reward_function2(self, platform_height, ball_height, done):
+        distance_to_target = abs(platform_height - ball_height)
+        diff = self.diff('ball', 'platform', "x", "x")
+        if diff:
+            reward = -25
+            done = True
+
+        # elapsed_time_in_reward = time.time()-self.elapsed_time
+        # self.all_ball_height_list.append(ball_height)
 
         # Ball going up
         if (self.previous_dist < ball_height) and (self.previous_dist != 0 ) and self.falling_flag == True:
@@ -154,7 +190,7 @@ class EnvClassName(mujoco_env.MujocoEnv, utils.EzPickle):
         # self.counter += 1
         self.previous_dist = ball_height
         self.prev_deck = self.decking_counter
-        return self.reward
+        return self.reward, done
 
 
     # def step_train(self, action):
